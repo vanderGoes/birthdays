@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.postgres',
 
-    'birthdays'
+    'birthdays',
 )
 
 MIDDLEWARE_CLASSES = (

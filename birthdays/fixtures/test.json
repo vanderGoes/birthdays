@@ -1,0 +1,74 @@
+[
+{
+    "fields": {
+        "first_name": null,
+        "last_name": "Berkers",
+        "master": null,
+        "full_name": null,
+        "props": "{\"single\": \"1\", \"address\": \"van Riebeeckstraat 10 bis\", \"sex\": \"m\"}",
+        "birth_date": null
+    },
+    "model": "birthdays.personsourcemockone",
+    "pk": 1
+},
+{
+    "fields": {
+        "first_name": null,
+        "last_name": "Raaphorst",
+        "master": null,
+        "full_name": null,
+        "props": "{\"single\": \"0\", \"address\": \"Amberboomstede 29\", \"sex\": \"f\"}",
+        "birth_date": null
+    },
+    "model": "birthdays.personsourcemockone",
+    "pk": 2
+},
+{
+    "fields": {
+        "first_name": null,
+        "last_name": "Laeven",
+        "master": null,
+        "full_name": null,
+        "props": "{\"single\": \"0\", \"address\": \"Tulastraat 8\", \"sex\": \"f\"}",
+        "birth_date": null
+    },
+    "model": "birthdays.personsourcemockone",
+    "pk": 3
+},
+{
+    "fields": {
+        "first_name": "Fako",
+        "last_name": null,
+        "master": null,
+        "full_name": null,
+        "props": "{\"occupation\": \"webdeveloper\", \"address\": \"van Riebeeckstraat 10 bis\", \"sex\": \"m\"}",
+        "birth_date": "1985-05-15"
+    },
+    "model": "birthdays.personsourcemocktwo",
+    "pk": 1
+},
+{
+    "fields": {
+        "first_name": "Celia",
+        "last_name": null,
+        "master": null,
+        "full_name": null,
+        "props": "{\"occupation\": \"researcher\", \"address\": \"Laan van Nieuw Guinea 9\", \"sex\": \"f\"}",
+        "birth_date": "1980-05-01"
+    },
+    "model": "birthdays.personsourcemocktwo",
+    "pk": 2
+},
+{
+    "fields": {
+        "first_name": "Jos",
+        "last_name": null,
+        "master": null,
+        "full_name": null,
+        "props": "{\"occupation\": \"retired\", \"address\": \"Tulastraat 8\", \"sex\": \"m\"}",
+        "birth_date": "1950-06-08"
+    },
+    "model": "birthdays.personsourcemocktwo",
+    "pk": 3
+}
+]
