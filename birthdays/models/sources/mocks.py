@@ -1,4 +1,4 @@
-from ..base import PersonSource
+from ..person import PersonSource
 
 
 class PersonSourceMockOne(PersonSource):

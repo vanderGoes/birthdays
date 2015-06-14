@@ -1,73 +1,163 @@
 [
 {
     "fields": {
-        "first_name": null,
-        "last_name": "Berkers",
-        "master": null,
-        "full_name": null,
-        "props": "{\"single\": \"1\", \"address\": \"van Riebeeckstraat 10 bis\", \"sex\": \"m\"}",
-        "birth_date": null
-    },
-    "model": "birthdays.personsourcemockone",
-    "pk": 1
-},
-{
-    "fields": {
-        "first_name": null,
-        "last_name": "Raaphorst",
-        "master": null,
-        "full_name": null,
-        "props": "{\"single\": \"0\", \"address\": \"Amberboomstede 29\", \"sex\": \"f\"}",
-        "birth_date": null
-    },
-    "model": "birthdays.personsourcemockone",
-    "pk": 2
-},
-{
-    "fields": {
-        "first_name": null,
-        "last_name": "Laeven",
-        "master": null,
-        "full_name": null,
-        "props": "{\"single\": \"0\", \"address\": \"Tulastraat 8\", \"sex\": \"f\"}",
-        "birth_date": null
-    },
-    "model": "birthdays.personsourcemockone",
-    "pk": 3
-},
-{
-    "fields": {
         "first_name": "Fako",
         "last_name": null,
-        "master": null,
         "full_name": null,
         "props": "{\"occupation\": \"webdeveloper\", \"address\": \"van Riebeeckstraat 10 bis\", \"sex\": \"m\"}",
-        "birth_date": "1985-05-15"
+        "birth_date": "1985-05-15",
+        "polymorphic_ctype": [
+            "birthdays",
+            "personsourcemocktwo"
+        ]
     },
-    "model": "birthdays.personsourcemocktwo",
+    "model": "birthdays.person",
     "pk": 1
 },
 {
     "fields": {
         "first_name": "Celia",
         "last_name": null,
-        "master": null,
         "full_name": null,
         "props": "{\"occupation\": \"researcher\", \"address\": \"Laan van Nieuw Guinea 9\", \"sex\": \"f\"}",
-        "birth_date": "1980-05-01"
+        "birth_date": "1980-05-01",
+        "polymorphic_ctype": [
+            "birthdays",
+            "personsourcemocktwo"
+        ]
     },
-    "model": "birthdays.personsourcemocktwo",
+    "model": "birthdays.person",
     "pk": 2
 },
 {
     "fields": {
         "first_name": "Jos",
         "last_name": null,
-        "master": null,
         "full_name": null,
         "props": "{\"occupation\": \"retired\", \"address\": \"Tulastraat 8\", \"sex\": \"m\"}",
-        "birth_date": "1950-06-08"
+        "birth_date": "1950-06-08",
+        "polymorphic_ctype": [
+            "birthdays",
+            "personsourcemocktwo"
+        ]
     },
+    "model": "birthdays.person",
+    "pk": 3
+},
+{
+    "fields": {
+        "first_name": null,
+        "last_name": "Berkers",
+        "full_name": null,
+        "props": "{\"single\": \"1\", \"address\": \"van Riebeeckstraat 10 bis\", \"sex\": \"m\"}",
+        "birth_date": null,
+        "polymorphic_ctype": [
+            "birthdays",
+            "personsourcemockone"
+        ]
+    },
+    "model": "birthdays.person",
+    "pk": 4
+},
+{
+    "fields": {
+        "first_name": null,
+        "last_name": "Raaphorst",
+        "full_name": null,
+        "props": "{\"single\": \"0\", \"address\": \"Amberboomstede 29\", \"sex\": \"f\"}",
+        "birth_date": null,
+        "polymorphic_ctype": [
+            "birthdays",
+            "personsourcemockone"
+        ]
+    },
+    "model": "birthdays.person",
+    "pk": 5
+},
+{
+    "fields": {
+        "first_name": null,
+        "last_name": "Laeven",
+        "full_name": null,
+        "props": "{\"single\": \"0\", \"address\": \"Tulastraat\", \"sex\": \"f\"}",
+        "birth_date": null,
+        "polymorphic_ctype": [
+            "birthdays",
+            "personsourcemockone"
+        ]
+    },
+    "model": "birthdays.person",
+    "pk": 6
+},
+{
+    "fields": {
+        "master": null
+    },
+    "model": "birthdays.personsource",
+    "pk": 1
+},
+{
+    "fields": {
+        "master": null
+    },
+    "model": "birthdays.personsource",
+    "pk": 2
+},
+{
+    "fields": {
+        "master": null
+    },
+    "model": "birthdays.personsource",
+    "pk": 3
+},
+{
+    "fields": {
+        "master": null
+    },
+    "model": "birthdays.personsource",
+    "pk": 4
+},
+{
+    "fields": {
+        "master": null
+    },
+    "model": "birthdays.personsource",
+    "pk": 5
+},
+{
+    "fields": {
+        "master": null
+    },
+    "model": "birthdays.personsource",
+    "pk": 6
+},
+{
+    "fields": {},
+    "model": "birthdays.personsourcemockone",
+    "pk": 4
+},
+{
+    "fields": {},
+    "model": "birthdays.personsourcemockone",
+    "pk": 5
+},
+{
+    "fields": {},
+    "model": "birthdays.personsourcemockone",
+    "pk": 6
+},
+{
+    "fields": {},
+    "model": "birthdays.personsourcemocktwo",
+    "pk": 1
+},
+{
+    "fields": {},
+    "model": "birthdays.personsourcemocktwo",
+    "pk": 2
+},
+{
+    "fields": {},
     "model": "birthdays.personsourcemocktwo",
     "pk": 3
 }

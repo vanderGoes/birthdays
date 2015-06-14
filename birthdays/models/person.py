@@ -1,7 +1,9 @@
+from pandas import DataFrame
+
 from django.db import models
 from django.contrib.postgres.fields import HStoreField
 
-from pandas import DataFrame
+from polymorphic import PolymorphicModel
 
 
 class PersonManager(models.Manager):
@@ -25,7 +27,7 @@ class PersonManager(models.Manager):
             return None
 
 
-class PersonBase(models.Model):
+class Person(PolymorphicModel):
 
     objects = PersonManager()
 
@@ -42,15 +44,9 @@ class PersonBase(models.Model):
 
     def save(self, *args, **kwargs):
         self.fill_full_name()
-        super(PersonBase, self).save(*args, **kwargs)
-
-    class Meta:
-        abstract = True
+        super(Person, self).save(*args, **kwargs)
 
 
-class PersonSource(PersonBase):
+class PersonSource(Person):
 
-    master = models.ForeignKey("Person", null=True, blank=True)
-
-    class Meta:
-        abstract = True
+    master = models.ForeignKey(Person, null=True, blank=True, related_name="sources")

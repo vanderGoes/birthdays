@@ -64,15 +64,14 @@ class Command(BaseCommand):
                 birth_date=generated.pop("birth_date", None),
                 props=generated,
                 source_one_id=pkx,
-                source_one_type=content_one,
                 source_two_id=pky,
-                source_two_type=content_two
             )
             gp.fill_full_name()
-            results.append(gp)
+            gp.save()
+            #results.append(gp)
 
-        if results:
-            GeneratedPerson.objects.bulk_create(results)
+        #if results:
+        #    GeneratedPerson.objects.bulk_create(results)
 
     def add_arguments(self, parser):
         pass

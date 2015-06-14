@@ -1,15 +1,9 @@
 from django.db import models
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 
-from .base import PersonSource
+from .person import PersonSource
 
 
 class GeneratedPerson(PersonSource):
 
-    source_one = GenericForeignKey(ct_field="source_one_type", fk_field="source_one_id")
-    source_one_type = models.ForeignKey(ContentType, related_name="+")
-    source_one_id = models.PositiveIntegerField()
-    source_two = GenericForeignKey(ct_field="source_two_type", fk_field="source_two_id")
-    source_two_type = models.ForeignKey(ContentType, related_name="+")
-    source_two_id = models.PositiveIntegerField()
+    source_one = models.ForeignKey(PersonSource, related_name="primary_set")
+    source_two = models.ForeignKey(PersonSource, related_name="secondary_set")
