@@ -1,0 +1,30 @@
+[
+{
+    "fields": {
+        "first_name": "Fako",
+        "last_name": null,
+        "full_name": null,
+        "occupation": "webdeveloper",
+        "birth_date": "1985-05-15"
+    }
+},
+{
+    "fields": {
+        "voor_naam": "Jos",
+        "achter_naam": null,
+        "volledige_naam": null,
+        "occupation": "gepensioneerd",
+        "geboorte_datum": "1980-05-01"
+    }
+},
+{
+    "fields": {
+        "voornaam": "Celia",
+        "last_name": null,
+        "full_name": null,
+        "occupation": "researcher",
+        "birth_date": "1980-05-01"
+    }
+}
+]
+

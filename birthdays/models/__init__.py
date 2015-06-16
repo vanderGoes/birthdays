@@ -1,3 +1,3 @@
-from .person import Person
-from .sources.mocks import PersonSourceMockOne, PersonSourceMockTwo
+from .person import Person, PersonSource
+from .sources.mocks import PersonSourceMockOne, PersonSourceMockTwo, PersonSourceMockThree
 from .generated import GeneratedPerson

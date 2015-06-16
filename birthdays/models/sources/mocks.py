@@ -7,3 +7,7 @@ class PersonSourceMockOne(PersonSource):
 
 class PersonSourceMockTwo(PersonSource):
     pass
+
+
+class PersonSourceMockThree(PersonSource):
+    pass

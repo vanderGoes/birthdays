@@ -6,12 +6,13 @@
         "full_name": null,
         "props": "{\"occupation\": \"webdeveloper\", \"address\": \"van Riebeeckstraat 10 bis\", \"sex\": \"m\"}",
         "birth_date": "1985-05-15",
+        "master": null,
         "polymorphic_ctype": [
             "birthdays",
             "personsourcemocktwo"
         ]
     },
-    "model": "birthdays.person",
+    "model": "birthdays.personsource",
     "pk": 1
 },
 {
@@ -21,12 +22,13 @@
         "full_name": null,
         "props": "{\"occupation\": \"researcher\", \"address\": \"Laan van Nieuw Guinea 9\", \"sex\": \"f\"}",
         "birth_date": "1980-05-01",
+        "master": null,
         "polymorphic_ctype": [
             "birthdays",
             "personsourcemocktwo"
         ]
     },
-    "model": "birthdays.person",
+    "model": "birthdays.personsource",
     "pk": 2
 },
 {
@@ -36,13 +38,46 @@
         "full_name": null,
         "props": "{\"occupation\": \"retired\", \"address\": \"Tulastraat 8\", \"sex\": \"m\"}",
         "birth_date": "1950-06-08",
+        "master": null,
         "polymorphic_ctype": [
             "birthdays",
             "personsourcemocktwo"
         ]
     },
-    "model": "birthdays.person",
+    "model": "birthdays.personsource",
     "pk": 3
+},
+{
+    "fields": {
+        "first_name": null,
+        "last_name": null,
+        "full_name": null,
+        "props": "{\"occupation\": \"empty source\"}",
+        "birth_date": null,
+        "master": null,
+        "polymorphic_ctype": [
+            "birthdays",
+            "personsourcemocktwo"
+        ]
+    },
+    "model": "birthdays.personsource",
+    "pk": 4
+},
+{
+    "fields": {
+        "first_name": null,
+        "last_name": null,
+        "full_name": null,
+        "props": "{\"occupation\": \"birthday only source\"}",
+        "birth_date": "1950-06-08",
+        "master": null,
+        "polymorphic_ctype": [
+            "birthdays",
+            "personsourcemocktwo"
+        ]
+    },
+    "model": "birthdays.personsource",
+    "pk": 5
 },
 {
     "fields": {
@@ -51,13 +86,14 @@
         "full_name": null,
         "props": "{\"single\": \"1\", \"address\": \"van Riebeeckstraat 10 bis\", \"sex\": \"m\"}",
         "birth_date": null,
+        "master": null,
         "polymorphic_ctype": [
             "birthdays",
             "personsourcemockone"
         ]
     },
-    "model": "birthdays.person",
-    "pk": 4
+    "model": "birthdays.personsource",
+    "pk": 6
 },
 {
     "fields": {
@@ -66,13 +102,14 @@
         "full_name": null,
         "props": "{\"single\": \"0\", \"address\": \"Amberboomstede 29\", \"sex\": \"f\"}",
         "birth_date": null,
+        "master": null,
         "polymorphic_ctype": [
             "birthdays",
             "personsourcemockone"
         ]
     },
-    "model": "birthdays.person",
-    "pk": 5
+    "model": "birthdays.personsource",
+    "pk": 7
 },
 {
     "fields": {
@@ -81,70 +118,77 @@
         "full_name": null,
         "props": "{\"single\": \"0\", \"address\": \"Tulastraat\", \"sex\": \"f\"}",
         "birth_date": null,
+        "master": null,
         "polymorphic_ctype": [
             "birthdays",
             "personsourcemockone"
         ]
     },
-    "model": "birthdays.person",
-    "pk": 6
+    "model": "birthdays.personsource",
+    "pk": 8
 },
 {
     "fields": {
-        "master": null
+        "first_name": "Boris",
+        "last_name": "Rodenko",
+        "full_name": null,
+        "props": "{\"single\": \"0\", \"address\": \"Laan van Nieuw Guinea 9\", \"sex\": \"m\"}",
+        "birth_date": "1970-01-01",
+        "master": null,
+        "polymorphic_ctype": [
+            "birthdays",
+            "personsourcemockone"
+        ]
     },
     "model": "birthdays.personsource",
-    "pk": 1
+    "pk": 9
 },
 {
     "fields": {
-        "master": null
+        "first_name": null,
+        "last_name": null,
+        "full_name": "Boris Rodenko",
+        "props": "{\"single\": \"0\", \"address\": \"Laan van Nieuw Guinea 9\", \"sex\": \"m\"}",
+        "birth_date": "1970-01-01",
+        "master": null,
+        "polymorphic_ctype": [
+            "birthdays",
+            "personsourcemockone"
+        ]
     },
     "model": "birthdays.personsource",
-    "pk": 2
+    "pk": 10
 },
 {
     "fields": {
-        "master": null
+        "first_name": null,
+        "last_name": null,
+        "full_name": "Wim Amerongen",
+        "props": "{\"single\": \"0\", \"address\": \"Amberboomstede 29\", \"sex\": \"m\"}",
+        "birth_date": "1949-06-04",
+        "master": null,
+        "polymorphic_ctype": [
+            "birthdays",
+            "personsourcemockone"
+        ]
     },
     "model": "birthdays.personsource",
-    "pk": 3
-},
-{
-    "fields": {
-        "master": null
-    },
-    "model": "birthdays.personsource",
-    "pk": 4
-},
-{
-    "fields": {
-        "master": null
-    },
-    "model": "birthdays.personsource",
-    "pk": 5
-},
-{
-    "fields": {
-        "master": null
-    },
-    "model": "birthdays.personsource",
-    "pk": 6
-},
-{
-    "fields": {},
-    "model": "birthdays.personsourcemockone",
-    "pk": 4
-},
-{
-    "fields": {},
-    "model": "birthdays.personsourcemockone",
-    "pk": 5
+    "pk": 11
 },
 {
     "fields": {},
     "model": "birthdays.personsourcemockone",
     "pk": 6
+},
+{
+    "fields": {},
+    "model": "birthdays.personsourcemockone",
+    "pk": 7
+},
+{
+    "fields": {},
+    "model": "birthdays.personsourcemockone",
+    "pk": 8
 },
 {
     "fields": {},
