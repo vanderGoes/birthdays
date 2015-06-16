@@ -27,7 +27,17 @@ class PersonManager(models.Manager):
             return None
 
 
-class Person(PolymorphicModel):
+class PersonMixin(object):
+
+    def fill_full_name(self):
+        if self.first_name and self.last_name and not self.full_name:
+            self.full_name = "{} {}".format(self.first_name, self.last_name)
+
+    def __unicode__(self):
+        return "{} {}".format(self.__class__.__name__, self.id)
+
+
+class Person(PersonMixin, models.Model):
 
     objects = PersonManager()
 
@@ -38,15 +48,23 @@ class Person(PolymorphicModel):
 
     props = HStoreField()
 
-    def fill_full_name(self):
-        if self.first_name and self.last_name and not self.full_name:
-            self.full_name = self.first_name + self.last_name
-
     def save(self, *args, **kwargs):
         self.fill_full_name()
         super(Person, self).save(*args, **kwargs)
 
 
-class PersonSource(Person):
+class PersonSource(PersonMixin, PolymorphicModel):
 
+    objects = PersonManager()
+
+    first_name = models.CharField(max_length=128, db_index=True, null=True, blank=True)
+    last_name = models.CharField(max_length=128, db_index=True, null=True, blank=True)
+    full_name = models.CharField(max_length=256, db_index=True, null=True, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+
+    props = HStoreField()
     master = models.ForeignKey(Person, null=True, blank=True, related_name="sources")
+
+    def save(self, *args, **kwargs):
+        self.fill_full_name()
+        super(PersonSource, self).save(*args, **kwargs)
