@@ -46,9 +46,9 @@ class Command(BaseCommand):
         for key, value in six.iteritems(dictionary):
             if key in mapping:
                 key = mapping[key]
-            if key == "birth_date":
+            if key == "birth_date" and value:
                 value = datetime.strptime(value, date_format).date()
-            fields[key] = value
+            fields[key] = value if value else None
         return fields
 
     @staticmethod
