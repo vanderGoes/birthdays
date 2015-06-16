@@ -24,3 +24,5 @@ class TestCombineCommand(TestCase):
     def test_add_to_master(self):
         InputCommand.add_to_master("PersonSource")
         self.assertEqual(Person.objects.count(), 2)
+        mp = Person.objects.last()
+        self.assertEqual(mp.sources.count(), 1)

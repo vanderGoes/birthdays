@@ -29,13 +29,15 @@ class Command(BaseCommand):
                 if master_set.filter(full_name=person_source.full_name).exists():
                     continue
                 else:
-                    master_set.create(
+                    master = master_set.create(
                         first_name=person_source.first_name,
                         last_name=person_source.last_name,
                         full_name=person_source.full_name,
                         birth_date=person_source.birth_date,
                         props=person_source.props
                     )
+                    person_source.master = master
+                    person_source.save()
 
     @staticmethod
     def prep_dict_for_fields(dictionary, mapping):
