@@ -2,6 +2,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import six
 
 import json
+from datetime import datetime
 
 from django.apps import apps as django_apps
 from django.core.management.base import BaseCommand
@@ -40,23 +41,25 @@ class Command(BaseCommand):
                     person_source.save()
 
     @staticmethod
-    def prep_dict_for_fields(dictionary, mapping):
+    def prep_dict_for_fields(dictionary, mapping, date_format):
         fields = {}
         for key, value in six.iteritems(dictionary):
             if key in mapping:
                 key = mapping[key]
-            fields[key] = value
+            if key == "birth_date" and value:
+                value = datetime.strptime(value, date_format).date()
+            fields[key] = value if value else None
         return fields
 
     @staticmethod
-    def from_fixture(file_name, source_name, mapping):
+    def from_fixture(file_name, source_name, mapping, date_format):
         source_model = django_apps.get_model(app_label="birthdays", model_name=source_name)
         with open(file_name, "r") as fp:
             data = json.load(fp)
             assert isinstance(data, list), "Expected a list inside " + file_name
             assert isinstance(data[0]["fields"], dict), "Expected JSON Django serialized models as elements in " + file_name
             for instance in data:
-                fields = Command.prep_dict_for_fields(instance["fields"], mapping)
+                fields = Command.prep_dict_for_fields(instance["fields"], mapping, date_format)
                 source_model.objects.create(
                     first_name=fields.pop("first_name", None),
                     last_name=fields.pop("last_name", None),
@@ -66,19 +69,23 @@ class Command(BaseCommand):
                 )
 
     @staticmethod
-    def from_records(file_name, source_name, mapping):
+    def from_records(file_name, source_name, mapping, date_format):
         pass
 
     @staticmethod
-    def from_csv(file_name, source_name, mapping):
+    def from_csv(file_name, source_name, mapping, date_format):
         pass
 
     def add_arguments(self, parser):
         parser.add_argument('input_type', type=unicode)
         parser.add_argument('-f', '--file', type=unicode)
         parser.add_argument('-s', '--source', type=unicode)
+        parser.add_argument('-a', '--add-to-master', type=bool, nargs="?", default=True)
         parser.add_argument('-m', '--mapping', type=unicode, action=DecodeMappingAction, nargs="?", default={})
+        parser.add_argument('-d', '--date-format', type=unicode, nargs="?", default="%d-%m-%Y")
 
     def handle(self, *args, **options):
         handler = getattr(self, options["input_type"])
-        handler(options["file"], options["source"], options["mapping"])
+        handler(options["file"], options["source"], options["mapping"], options["date_format"])
+        if options["add_to_master"]:
+            self.add_to_master(options["source"])
