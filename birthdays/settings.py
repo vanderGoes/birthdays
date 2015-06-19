@@ -85,7 +85,14 @@ DATABASES = {
         'PASSWORD': 'django',
         'HOST': '127.0.0.1',
         'PORT': '5432',
-    }
+    },
+    'mysql': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'travelbird',
+        'STORAGE_ENGINE': 'INNODB',
+        'USER': 'root',
+        'PASSWORD': ''
+    },
 }
 
 

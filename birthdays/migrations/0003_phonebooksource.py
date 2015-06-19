@@ -7,12 +7,12 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('birthdays', '0001_initial'),
+        ('birthdays', '0002_wikisource'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='WikiSource',
+            name='PhoneBookSource',
             fields=[
                 ('personsource_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='birthdays.PersonSource')),
             ],

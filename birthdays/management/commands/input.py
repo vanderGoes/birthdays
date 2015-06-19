@@ -6,6 +6,7 @@ from datetime import datetime
 
 from django.apps import apps as django_apps
 from django.core.management.base import BaseCommand
+from django.db import connections
 
 from birthdays.models import Person, PersonSource
 from ._actions import DecodeMappingAction
@@ -27,9 +28,9 @@ class Command(BaseCommand):
             if (person_source.full_name or person_source.first_name and person_source.last_name) \
                     and person_source.birth_date:
                 person_source.fill_full_name()  # assure presence of full name
-                if master_set.filter(full_name=person_source.full_name).exists():
-                    continue
-                else:
+                try:
+                    master = master_set.object.get(full_name=person_source.full_name)
+                except Person.DoesNotExist:
                     master = master_set.create(
                         first_name=person_source.first_name,
                         last_name=person_source.last_name,
@@ -37,8 +38,8 @@ class Command(BaseCommand):
                         birth_date=person_source.birth_date,
                         props=person_source.props
                     )
-                    person_source.master = master
-                    person_source.save()
+                person_source.master = master
+                person_source.save()
 
     @staticmethod
     def prep_dict_for_fields(dictionary, mapping, date_format):
@@ -76,11 +77,37 @@ class Command(BaseCommand):
     def from_csv(file_name, source_name, mapping, date_format):
         pass
 
+    @staticmethod
+    def from_mysql_table(table_name, source_name, mapping, date_format):
+        source_model = django_apps.get_model(app_label="birthdays", model_name=source_name)
+        cursor = connections["mysql"].cursor()
+        cursor.execute("SELECT COUNT(*) FROM {}".format(table_name))
+        count = cursor.fetchone()[0]
+        batch_size = 1000
+        batch_count = int(count / batch_size) + 1
+        for index in range(0, batch_count):
+            offset = index * batch_size
+            cursor.execute("SELECT * FROM {} LIMIT {} OFFSET {}".format(table_name, batch_size, offset))
+            desc = cursor.description
+            records = [
+                dict(zip([col[0] for col in desc], row))
+                for row in cursor.fetchall()
+            ]
+            for record in records:
+                fields = Command.prep_dict_for_fields(record, mapping, date_format)
+                source_model.objects.create(
+                    first_name=fields.pop("first_name", None),
+                    last_name=fields.pop("last_name", None),
+                    full_name=fields.pop("full_name", None),
+                    birth_date=fields.pop("birth_date", None),
+                    props=fields
+                )
+
     def add_arguments(self, parser):
         parser.add_argument('input_type', type=unicode)
         parser.add_argument('-f', '--file', type=unicode)
         parser.add_argument('-s', '--source', type=unicode)
-        parser.add_argument('-a', '--add-to-master', type=bool, nargs="?", default=True)
+        parser.add_argument('-a', '--add-to-master', action="store_true")
         parser.add_argument('-m', '--mapping', type=unicode, action=DecodeMappingAction, nargs="?", default={})
         parser.add_argument('-d', '--date-format', type=unicode, nargs="?", default="%d-%m-%Y")
 
