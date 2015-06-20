@@ -88,10 +88,11 @@ DATABASES = {
     },
     'mysql': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'travelbird',
-        'STORAGE_ENGINE': 'INNODB',
+        'NAME': 'kalender',
         'USER': 'root',
-        'PASSWORD': ''
+    	'PASSWORD': 'L6DcdcahGC7Rk',
+    	'HOST': '127.0.0.1',
+    	'OPTIONS': {'charset': 'utf8mb4'},
     },
 }
 

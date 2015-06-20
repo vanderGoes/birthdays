@@ -49,7 +49,7 @@ class Command(BaseCommand):
                 key = mapping[key]
             if key == "birth_date" and value:
                 value = datetime.strptime(value, date_format).date()
-            fields[key] = value if value else None
+            fields[key] = unicode(value) if value else None
         return fields
 
     @staticmethod
@@ -84,7 +84,7 @@ class Command(BaseCommand):
         cursor.execute("SELECT COUNT(*) FROM {}".format(table_name))
         count = cursor.fetchone()[0]
         batch_size = 1000
-        batch_count = int(count / batch_size) + 1
+        batch_count = int(count / batch_size) + 1  # bit naieve
         for index in range(0, batch_count):
             offset = index * batch_size
             cursor.execute("SELECT * FROM {} LIMIT {} OFFSET {}".format(table_name, batch_size, offset))
