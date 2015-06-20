@@ -33,12 +33,12 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
-    'polymorphic',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
+    'polymorphic',
     'birthdays',
 )
 
@@ -88,13 +88,16 @@ DATABASES = {
     },
     'mysql': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'travelbird',
-        'STORAGE_ENGINE': 'INNODB',
+        'NAME': 'kalender',
         'USER': 'root',
-        'PASSWORD': ''
+    	'PASSWORD': 'L6DcdcahGC7Rk',
+    	'HOST': '127.0.0.1',
+    	'OPTIONS': {'charset': 'utf8mb4'},
     },
 }
-
+import sys
+if "test" in sys.argv:
+    del DATABASES["mysql"]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
