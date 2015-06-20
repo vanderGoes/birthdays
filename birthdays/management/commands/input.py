@@ -25,9 +25,7 @@ class Command(BaseCommand):
         assert issubclass(source_model, PersonSource), "Specified source {} is not a subclass of Person".format(source_name)
 
         for person_source in source_model.objects.all():
-            if (person_source.full_name or person_source.first_name and person_source.last_name) \
-                    and person_source.birth_date:
-                person_source.fill_full_name()  # assure presence of full name
+            if person_source.full_name and person_source.birth_date:
                 try:
                     master = master_set.get(full_name=person_source.full_name)
                 except Person.DoesNotExist:

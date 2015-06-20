@@ -3,10 +3,10 @@ from pandas import DataFrame
 from django.db import models
 from django.contrib.postgres.fields import HStoreField
 
-from polymorphic import PolymorphicModel
+from polymorphic import PolymorphicModel, PolymorphicManager
 
 
-class PersonManager(models.Manager):
+class PersonManager(PolymorphicManager):
 
     def get_data_frame(self, *args, **kwargs):
         people = super(PersonManager, self).get_queryset(*args, **kwargs)
@@ -42,8 +42,6 @@ class PersonMixin(object):
 
 
 class Person(PersonMixin, models.Model):
-
-    objects = PersonManager()
 
     first_name = models.CharField(max_length=128, db_index=True, null=True, blank=True)
     initials = models.CharField(max_length=20, db_index=True, null=True, blank=True)
