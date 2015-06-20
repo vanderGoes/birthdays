@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from pandas import DataFrame
 
 from django.db import models
@@ -32,7 +34,8 @@ class PersonManager(PolymorphicManager):
 class PersonMixin(object):
 
     def fill_full_name(self):
-        self.full_name = "{} {}".format(self.first_name, self.last_name)
+        if self.first_name and self.last_name and not self.full_name:
+            self.full_name = "{} {}".format(self.first_name, self.last_name)
 
     def split_full_name(self):
         pass  # depends heavily on the source
@@ -75,9 +78,7 @@ class PersonSource(PersonMixin, PolymorphicModel):
     master = models.ForeignKey(Person, null=True, blank=True, related_name="sources")
 
     def save(self, *args, **kwargs):
-        if self.first_name and self.last_name and not self.full_name:
-            self.fill_full_name()
-        if self.full_name and (not self.first_name or not self.last_name):
-            self.split_full_name()
+        self.fill_full_name()
+        self.split_full_name()
         super(PersonSource, self).save(*args, **kwargs)
 
