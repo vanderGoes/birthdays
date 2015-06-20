@@ -3,7 +3,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 from django.test import TestCase
 
 from birthdays.management.commands.input import Command as InputCommand
-from birthdays.models import Person, PersonSourceMockOne
+from birthdays.models import Person, PersonSourceMockOne, PersonSource
 
 
 class TestCombineCommand(TestCase):
@@ -12,7 +12,7 @@ class TestCombineCommand(TestCase):
 
     def test_from_fixture(self):
         InputCommand.from_fixture("birthdays/tests/mock-fixture.json", "PersonSourceMockOne", {"voornaam": "first_name"}, "%Y-%m-%d")
-        self.assertEqual(PersonSourceMockOne.objects.count(), 6)  # 3 from Django fixtures, 3 from file.
+        self.assertEqual(PersonSourceMockOne.objects.count(), 9)  # 6 from Django fixtures, 3 from file.
         mp = PersonSourceMockOne.objects.last()
         self.assertTrue(mp.props["occupation"])
         self.assertTrue(mp.first_name)
@@ -25,6 +25,5 @@ class TestCombineCommand(TestCase):
         InputCommand.add_to_master("PersonSource")
         self.assertEqual(Person.objects.count(), 2)
         mp = Person.objects.last()
-        import ipdb; ipdb.set_trace()
         self.assertEqual(mp.sources.count(), 1)
 

@@ -90,9 +90,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kalender',
         'USER': 'root',
-    	'PASSWORD': 'L6DcdcahGC7Rk',
-    	'HOST': '127.0.0.1',
-    	'OPTIONS': {'charset': 'utf8mb4'},
+        'PASSWORD': 'L6DcdcahGC7Rk',
+        'HOST': '127.0.0.1',
+        'OPTIONS': {'charset': 'utf8mb4'},
     },
 }
 import sys
