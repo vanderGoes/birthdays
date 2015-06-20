@@ -18,4 +18,11 @@ class TestCombineCommand(TestCase):
         instance.full_name = "Berkers, F.C."
         instance.split_full_name()
         self.assertEqual(instance.initials, "F.C.")
+        self.assertEqual(instance.prefix, None)
         self.assertEqual(instance.last_name, "Berkers")
+        instance = NBASource()
+        instance.full_name = "Berkers"
+        instance.split_full_name()
+        self.assertEqual(instance.initials, None)
+        self.assertEqual(instance.prefix, None)
+        self.assertEqual(instance.last_name, None)
