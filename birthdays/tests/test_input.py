@@ -11,7 +11,7 @@ class TestCombineCommand(TestCase):
     fixtures = ["test.json"]
 
     def test_from_fixture(self):
-        InputCommand.from_fixture("birthdays/tests/mock-fixture.json", "PersonSourceMockOne", {"voornaam": "first_name"})
+        InputCommand.from_fixture("birthdays/tests/mock-fixture.json", "PersonSourceMockOne", {"voornaam": "first_name"}, "%Y-%m-%d")
         self.assertEqual(PersonSourceMockOne.objects.count(), 6)  # 3 from Django fixtures, 3 from file.
         mp = PersonSourceMockOne.objects.last()
         self.assertTrue(mp.props["occupation"])
@@ -25,4 +25,6 @@ class TestCombineCommand(TestCase):
         InputCommand.add_to_master("PersonSource")
         self.assertEqual(Person.objects.count(), 2)
         mp = Person.objects.last()
+        import ipdb; ipdb.set_trace()
         self.assertEqual(mp.sources.count(), 1)
+

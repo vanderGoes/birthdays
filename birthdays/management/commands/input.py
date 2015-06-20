@@ -29,10 +29,12 @@ class Command(BaseCommand):
                     and person_source.birth_date:
                 person_source.fill_full_name()  # assure presence of full name
                 try:
-                    master = master_set.object.get(full_name=person_source.full_name)
+                    master = master_set.get(full_name=person_source.full_name)
                 except Person.DoesNotExist:
                     master = master_set.create(
                         first_name=person_source.first_name,
+                        initials=person_source.initials,
+                        prefix=person_source.prefix,
                         last_name=person_source.last_name,
                         full_name=person_source.full_name,
                         birth_date=person_source.birth_date,
@@ -63,6 +65,8 @@ class Command(BaseCommand):
                 fields = Command.prep_dict_for_fields(instance["fields"], mapping, date_format)
                 source_model.objects.create(
                     first_name=fields.pop("first_name", None),
+                    initials=fields.pop("initials", None),
+                    prefix=fields.pop("prefix", None),
                     last_name=fields.pop("last_name", None),
                     full_name=fields.pop("full_name", None),
                     birth_date=fields.pop("birth_date", None),
@@ -116,3 +120,4 @@ class Command(BaseCommand):
         handler(options["file"], options["source"], options["mapping"], options["date_format"])
         if options["add_to_master"]:
             self.add_to_master(options["source"])
+

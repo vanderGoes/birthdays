@@ -33,12 +33,12 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
-    'polymorphic',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
+    'polymorphic',
     'birthdays',
 )
 
@@ -95,7 +95,9 @@ DATABASES = {
     	'OPTIONS': {'charset': 'utf8mb4'},
     },
 }
-
+import sys
+if "test" in sys.argv:
+    del DATABASES["mysql"]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
