@@ -12,8 +12,8 @@ class TestCombineCommand(TestCase):
 
     def test_combine(self):
         CombineCommand.combine("PersonSourceMockOne", "PersonSourceMockTwo", ["sex", "address"])
-        self.assertEqual(GeneratedPerson.objects.count(), 1)
-        gp = GeneratedPerson.objects.last()
+        self.assertEqual(GeneratedPerson.objects.count(), 2)
+        gp = GeneratedPerson.objects.first()
         self.assertTrue(gp.first_name)
         self.assertTrue(gp.last_name)
         self.assertTrue(gp.full_name)

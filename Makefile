@@ -1,5 +1,6 @@
 import-wiki:
-	python ./manage.py input from_fixture -f ../data/wiki.json -s WikiSource -m "naam=full_name&geboortedatum=birth_date" -a
+	python ./manage.py input from_fixture -f ../data/wiki.json -s WikiSource -m "naam=full_name&geboortedatum=birth_date"
+	python ./manage.py extend add_to_master -s WikiSource
 
 import-telephone:
 	python ./manage.py input from_mysql_table -f telefoonBoekGemeente -s PhoneBookSource -m "gemeente=district&lastname=last_name" 
@@ -12,7 +13,9 @@ import-big:
 
 import-soccer:
 	python ./manage.py input from_mysql_table -f voetballers -s SoccerSource -m "naam=full_name&datum=birth_date&profiel=profile" -d "%d/%m/%Y"
+	python ./manage.py extend add_to_master -s SoccerSource
 
 import-wie-o-wie:
 	python ./manage.py input from_mysql_table -f wieowiepers -s WieOWieSource -m "name=full_name"
+	python ./manage.py extend extend_master -s WieOWieSource
 

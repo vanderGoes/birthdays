@@ -20,10 +20,3 @@ class TestCombineCommand(TestCase):
         self.assertFalse(mp.full_name)
         self.assertTrue(mp.birth_date)
         self.assertEqual(sorted(mp.props.keys()), sorted(['occupation']))
-
-    def test_add_to_master(self):
-        InputCommand.add_to_master("PersonSource")
-        self.assertEqual(Person.objects.count(), 2)
-        mp = Person.objects.last()
-        self.assertEqual(mp.sources.count(), 1)
-

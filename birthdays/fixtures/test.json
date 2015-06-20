@@ -176,6 +176,22 @@
     "pk": 11
 },
 {
+    "fields": {
+        "first_name": null,
+        "last_name": null,
+        "full_name": "Wim Amerongen",
+        "props": "{\"occupation\": \"retired\", \"address\": \"Amberboomstede 29\", \"sex\": \"m\"}",
+        "birth_date": "1949-06-04",
+        "master": null,
+        "polymorphic_ctype": [
+            "birthdays",
+            "personsourcemocktwo"
+        ]
+    },
+    "model": "birthdays.personsource",
+    "pk": 12
+},
+{
     "fields": {},
     "model": "birthdays.personsourcemockone",
     "pk": 6
@@ -219,5 +235,10 @@
     "fields": {},
     "model": "birthdays.personsourcemocktwo",
     "pk": 3
+},
+{
+    "fields": {},
+    "model": "birthdays.personsourcemocktwo",
+    "pk": 12
 }
 ]

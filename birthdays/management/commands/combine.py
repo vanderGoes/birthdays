@@ -44,13 +44,10 @@ class Command(BaseCommand):
     def combine(source_one, source_two, keys):
         model_one = django_apps.get_model(app_label="birthdays", model_name=source_one)
         model_two = django_apps.get_model(app_label="birthdays", model_name=source_two)
-        content_one = ContentType.objects.get_for_model(model_one)
-        content_two = ContentType.objects.get_for_model(model_two)
         data_one = model_one.objects.get_data_frame()
         data_two = model_two.objects.get_data_frame()
         merged = data_one.merge(data_two, on=keys)
 
-        results = []
         for merge in merged.to_dict(orient="records"):
             generated = Command.clean_record(merge)
             if not generated:
