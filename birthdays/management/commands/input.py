@@ -18,30 +18,6 @@ class Command(BaseCommand):
     """
 
     @staticmethod
-    def add_to_master(source_name):
-        source_model = django_apps.get_model(app_label="birthdays", model_name=source_name)
-        master_set = Person.objects.all()
-
-        assert issubclass(source_model, PersonSource), "Specified source {} is not a subclass of Person".format(source_name)
-
-        for person_source in source_model.objects.all():
-            if person_source.full_name and person_source.birth_date:
-                try:
-                    master = master_set.get(full_name=person_source.full_name)
-                except Person.DoesNotExist:
-                    master = master_set.create(
-                        first_name=person_source.first_name,
-                        initials=person_source.initials,
-                        prefix=person_source.prefix,
-                        last_name=person_source.last_name,
-                        full_name=person_source.full_name,
-                        birth_date=person_source.birth_date,
-                        props=person_source.props
-                    )
-                person_source.master = master
-                person_source.save()
-
-    @staticmethod
     def prep_dict_for_fields(dictionary, mapping, date_format):
         fields = {}
         for key, value in six.iteritems(dictionary):
@@ -109,13 +85,9 @@ class Command(BaseCommand):
         parser.add_argument('input_type', type=unicode)
         parser.add_argument('-f', '--file', type=unicode)
         parser.add_argument('-s', '--source', type=unicode)
-        parser.add_argument('-a', '--add-to-master', action="store_true")
         parser.add_argument('-m', '--mapping', type=unicode, action=DecodeMappingAction, nargs="?", default={})
         parser.add_argument('-d', '--date-format', type=unicode, nargs="?", default="%d-%m-%Y")
 
     def handle(self, *args, **options):
         handler = getattr(self, options["input_type"])
         handler(options["file"], options["source"], options["mapping"], options["date_format"])
-        if options["add_to_master"]:
-            self.add_to_master(options["source"])
-
