@@ -7,6 +7,7 @@ import-telephone:
 
 import-nba:
 	python ./manage.py input from_mysql_table -f nba -s NBASource -m "naam=name&voornaam=first_name&geboortedatum=birth_date&stad=city"
+	python ./manage.py extend add_to_master -s NBASource
 
 import-big:
 	python ./manage.py input from_mysql_table -f big -s BIGSource -m "lastname=last_name&birthday=birth_date"
