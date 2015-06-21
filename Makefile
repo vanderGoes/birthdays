@@ -7,7 +7,6 @@ import-telephone:
 
 import-nba:
 	python ./manage.py input from_mysql_table -f nba -s NBASource -m "naam=name&voornaam=first_name&geboortedatum=birth_date&stad=city"
-	python ./manage.py extend add_to_master -s NBASource
 
 import-big:
 	python ./manage.py input from_mysql_table -f big -s BIGSource -m "lastname=last_name&birthday=birth_date"
@@ -19,4 +18,7 @@ import-soccer:
 import-wie-o-wie:
 	python ./manage.py input from_mysql_table -f wieowiepers -s WieOWieSource -m "name=full_name"
 	python ./manage.py extend extend_master -s WieOWieSource
+
+import-schoolbank:
+    python ./manage.py input from_mysql_table -f schoolbank -s SchoolBankSource -m "name=full_name"
 
