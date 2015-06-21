@@ -8,3 +8,6 @@ class PhoneBookSource(PersonSource):
 class WieOWieSource(PersonSource):
     pass
 
+
+class SchoolBankSource(PersonSource):
+    pass

@@ -24,7 +24,7 @@ class Command(BaseCommand):
         for person_source in source_model.objects.all():
             if person_source.full_name and person_source.birth_date:
                 try:
-                    master = master_set.get(full_name=person_source.full_name)
+                    master = master_set.get(full_name=person_source.full_name, birth_date=person_source.birth_date)
                 except Person.DoesNotExist:
                     master = master_set.create(
                         first_name=person_source.first_name,
