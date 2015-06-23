@@ -82,12 +82,37 @@ class Command(BaseCommand):
                 )
 
     def add_arguments(self, parser):
-        parser.add_argument('input_type', type=unicode)
-        parser.add_argument('-f', '--file', type=unicode)
-        parser.add_argument('-s', '--source', type=unicode)
-        parser.add_argument('-m', '--mapping', type=unicode, action=DecodeMappingAction, nargs="?", default={})
-        parser.add_argument('-d', '--date-format', type=unicode, nargs="?", default="%d-%m-%Y")
+        parser.add_argument(
+            'input_method',
+            type=unicode,
+            help="The input method. Either 'from_fixture' or 'from_mysql_table'."
+        )
+        parser.add_argument(
+            '-f', '--file',
+            type=unicode,
+            help="The input data location. Either a fixture file or a MySQL table."
+        )
+        parser.add_argument(
+            '-s', '--source',
+            type=unicode,
+            help="The name of the PersonSource to store the data under."
+        )
+        parser.add_argument(
+            '-m', '--mapping',
+            type=unicode,
+            action=DecodeMappingAction,
+            nargs="?",
+            default={},
+            help="A urlencoded string that specifies how to map the input data to the source data. Example: 'naam=full_name&geboortedatum=birth_date'."
+        )
+        parser.add_argument(
+            '-d', '--date-format',
+            type=unicode,
+            nargs="?",
+            default="%d-%m-%Y",
+            help="The format of the input data that should be stored in the birth_date source field."
+        )
 
     def handle(self, *args, **options):
-        handler = getattr(self, options["input_type"])
+        handler = getattr(self, options["input_method"])
         handler(options["file"], options["source"], options["mapping"], options["date_format"])

@@ -52,8 +52,16 @@ class Command(BaseCommand):
             person_source.save()
 
     def add_arguments(self, parser):
-        parser.add_argument('extend_type', type=unicode)
-        parser.add_argument('-s', '--source', type=unicode)
+        parser.add_argument(
+            'extend_type',
+            type=unicode,
+            help="The extend method. Either 'add_to_master' or 'extend_master'."
+        )
+        parser.add_argument(
+            '-s', '--source',
+            type=unicode,
+            help="The source to add or extend from."
+        )
 
     def handle(self, *args, **options):
         source_model = django_apps.get_model(app_label="birthdays", model_name=options["source"])
