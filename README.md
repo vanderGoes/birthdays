@@ -62,3 +62,6 @@ Next steps
 It would be very interesting to be able to split names based on Meertens Instituut data. Every PersonSource provides a split_full_name method, but by default it does nothing.
 Splitting names will make it easier to combine information where only the last name and address is known (like with the phone book).
 Using the Meertens Instituut data it will also be easier to split the pink and white pages of the phone book and get more reliable person data.
+
+Another next step is to import all the BIG data. I didn't import this data yet as the amount of data in the MySQL server was low. 
+The SchoolBank data is imported into the system, but hasn't been combined yet.
