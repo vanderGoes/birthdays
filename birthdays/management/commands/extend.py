@@ -51,6 +51,12 @@ class Command(BaseCommand):
             person_source.master = master
             person_source.save()
 
+    @staticmethod
+    def split_full_name(source_model):
+        for person_source in source_model.objects.all():
+            person_source.split_full_name()
+            person_source.save()
+
     def add_arguments(self, parser):
         parser.add_argument(
             'extend_type',
