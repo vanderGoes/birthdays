@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+import string
+
 from pandas import DataFrame
 
 from django.db import models
@@ -33,11 +35,33 @@ class PersonManager(PolymorphicManager):
 
 class PersonMixin(object):
 
+    prefixes = ["van", "der"]
+
     def fill_full_name(self):
         if self.first_name and self.last_name and not self.full_name:
             self.full_name = "{} {}".format(self.first_name, self.last_name)
 
     def split_full_name(self):
+        if not self.full_name:
+            return
+        names = self.full_name.lower().split(" ")
+        if not len(names) > 1:
+            return
+
+        last_name = names.pop()
+        first_names = []
+        prefixes = []
+        print self.prefixes
+        for name in names:
+            if name in self.prefixes:
+                prefixes.append(name)
+            else:
+                first_names.append(name)
+
+        self.last_name = last_name.capitalize()
+        self.first_name = " ".join(map(string.capitalize, first_names))
+        self.prefix = " ".join(prefixes) if prefixes else None
+
         pass  # depends heavily on the source
 
     def __unicode__(self):
