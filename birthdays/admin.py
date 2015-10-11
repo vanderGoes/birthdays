@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from birthdays.models import (Person, NBASource, BIGSource, PhoneBookSource, WieOWieSource, WikiSource,
-                              SchoolBankSource, ActeursSpotSource)
+                              SchoolBankSource, ActeursSpotSource, BenfActingSource)
 
 
 class PersonSourceAdmin(admin.ModelAdmin):
@@ -16,3 +16,4 @@ admin.site.register(WieOWieSource, PersonSourceAdmin)
 admin.site.register(WikiSource, PersonSourceAdmin)
 admin.site.register(SchoolBankSource, PersonSourceAdmin)
 admin.site.register(ActeursSpotSource, PersonSourceAdmin)
+admin.site.register(BenfActingSource, PersonSourceAdmin)

@@ -24,3 +24,6 @@ import-schoolbank:
 
 import-acteursspot:
 	python ./manage.py input from_records -f ../data/acteurs_spot.json -s ActeursSpotSource -m "achternaam=full_name&afbeelding=picture&voornaam=confirmed_first_name"
+
+import-acteursspot:
+	python ./manage.py input from_records -f ../data/benf_casting.json -s ActeursSpotSource -m "achternaam=full_name&afbeelding=picture&voornaam=confirmed_first_name"
