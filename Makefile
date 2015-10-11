@@ -20,5 +20,7 @@ import-wie-o-wie:
 	python ./manage.py extend extend_master -s WieOWieSource
 
 import-schoolbank:
-    python ./manage.py input from_mysql_table -f schoolbank -s SchoolBankSource -m "name=full_name"
+	python ./manage.py input from_mysql_table -f schoolbank -s SchoolBankSource -m "name=full_name"
 
+import-acteursspot:
+	python ./manage.py input from_records -f ../data/acteurs_spot.json -s ActeursSpotSource -m "achternaam=full_name&afbeelding=picture&voornaam=confirmed_first_name"
