@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.postgres',
     'polymorphic',
     'birthdays',
+    'ontology'
 )
 
 MIDDLEWARE_CLASSES = (

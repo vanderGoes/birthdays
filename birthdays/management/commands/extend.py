@@ -51,12 +51,27 @@ class Command(BaseCommand):
             person_source.master = master
             person_source.save()
 
+    @staticmethod
+    def split_full_name(source_model):
+        for person_source in source_model.objects.all():
+            person_source.split_full_name()
+            person_source.save()
+
     def add_arguments(self, parser):
-        parser.add_argument('extend_type', type=unicode)
-        parser.add_argument('-s', '--source', type=unicode)
+        parser.add_argument(
+            'extend_type',
+            type=unicode,
+            help="The extend method. Either 'add_to_master', 'split_full_name' or 'extend_master'."
+        )
+        parser.add_argument(
+            '-s', '--source',
+            type=unicode,
+            help="The source to add or extend from."
+        )
 
     def handle(self, *args, **options):
         source_model = django_apps.get_model(app_label="birthdays", model_name=options["source"])
         assert issubclass(source_model, PersonSource), "Specified source {} is not a subclass of PersonSource".format(options["source"])
         handler = getattr(self, options["extend_type"])
         handler(source_model)
+
