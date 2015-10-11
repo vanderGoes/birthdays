@@ -48,8 +48,8 @@ class PersonMixin(object):
         "'s",
         "'t",
         "te", "ten", "ter",
-        "tot"
-        "uit", "uijt"
+        "tot",
+        "uit", "uijt",
         "van", "vanden",
         "ver",
         "voor",
@@ -83,7 +83,7 @@ class PersonMixin(object):
         "unter",
         "vom", "von",
         "vor",
-        "zu", "zum", "zur"
+        "zu", "zum", "zur",
     ]
 
     def fill_full_name(self):
