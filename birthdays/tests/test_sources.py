@@ -2,7 +2,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 from django.test import TestCase
 
-from birthdays.models import NBASource, Person
+from birthdays.models import NBASource, Person, SoccerSource
 
 
 class TestCombineCommand(TestCase):
@@ -46,3 +46,12 @@ class TestCombineCommand(TestCase):
         self.assertEqual(instance.first_name, "Ellen")
         self.assertEqual(instance.prefix, None)
         self.assertEqual(instance.last_name, "Bijsterbosch")
+
+    def test_soccer_split_name(self):
+        instance = SoccerSource()
+        instance.full_name = "H. van der Spek"
+        instance.split_full_name()
+        self.assertEqual(instance.first_name, None)
+        self.assertEqual(instance.initials, "H.")
+        self.assertEqual(instance.prefix, "van der")
+        self.assertEqual(instance.last_name, "Spek")
