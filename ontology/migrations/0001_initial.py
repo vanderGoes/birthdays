@@ -15,19 +15,8 @@ class Migration(migrations.Migration):
             name='Date',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('sources', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=255), size=None)),
+                ('sources', django.contrib.postgres.fields.ArrayField(default=list, null=True, base_field=models.CharField(max_length=255), size=None)),
                 ('date', models.DateField()),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='Day',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('sources', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=255), size=None)),
-                ('day', models.PositiveSmallIntegerField()),
             ],
             options={
                 'abstract': False,
@@ -37,7 +26,7 @@ class Migration(migrations.Migration):
             name='FirstName',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('sources', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=255), size=None)),
+                ('sources', django.contrib.postgres.fields.ArrayField(default=list, null=True, base_field=models.CharField(max_length=255), size=None)),
                 ('name', models.CharField(max_length=255)),
             ],
             options={
@@ -48,19 +37,8 @@ class Migration(migrations.Migration):
             name='LastName',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('sources', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=255), size=None)),
+                ('sources', django.contrib.postgres.fields.ArrayField(default=list, null=True, base_field=models.CharField(max_length=255), size=None)),
                 ('name', models.CharField(max_length=255)),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='Month',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('sources', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=255), size=None)),
-                ('month', models.PositiveSmallIntegerField()),
             ],
             options={
                 'abstract': False,
@@ -70,7 +48,7 @@ class Migration(migrations.Migration):
             name='Year',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('sources', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=255), size=None)),
+                ('sources', django.contrib.postgres.fields.ArrayField(default=list, null=True, base_field=models.CharField(max_length=255), size=None)),
                 ('year', models.IntegerField()),
             ],
             options={

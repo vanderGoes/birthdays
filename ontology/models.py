@@ -4,8 +4,15 @@ from django.contrib.postgres.fields import ArrayField
 
 class OntologyItem(models.Model):
     sources = ArrayField(
-        models.CharField(max_length=255)
+        models.CharField(max_length=255),
+        null=True,
+        default=list
     )
+
+    def add_source(self, model):
+        model_name = model._meta.model_name
+        if model_name not in self.sources:
+            self.sources.append(model_name)
 
     class Meta:
         abstract = True
@@ -21,14 +28,6 @@ class FirstName(OntologyItem):
 
 class Date(OntologyItem):
     date = models.DateField()
-
-
-class Day(OntologyItem):
-    day = models.PositiveSmallIntegerField()
-
-
-class Month(OntologyItem):
-    month = models.PositiveSmallIntegerField()
 
 
 class Year(OntologyItem):
