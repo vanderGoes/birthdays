@@ -118,7 +118,8 @@ class Command(BaseCommand):
             action=DecodeMappingAction,
             nargs="?",
             default={},
-            help="A urlencoded string that specifies how to map the input data to the source data. Example: 'naam=full_name&geboortedatum=birth_date'."
+            help="A urlencoded string that specifies how to map the input data to the source data. "
+                 "Example: 'naam=full_name&geboortedatum=birth_date'."
         )
         parser.add_argument(
             '-d', '--date-format',
