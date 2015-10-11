@@ -5,5 +5,5 @@ class ActeursSpotSource(PersonSource):
     pass
 
 
-class BenfActingSource(PersonSource):
+class BenfCastingSource(PersonSource):
     pass
