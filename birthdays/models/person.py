@@ -38,7 +38,7 @@ class PersonMixin(object):
     prefixes = [
         "af",
         "aan",
-        "bij"
+        "bij",
         "de", "den", "der", "d'",
         "het", "'t",
         "in",
