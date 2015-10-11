@@ -35,7 +35,56 @@ class PersonManager(PolymorphicManager):
 
 class PersonMixin(object):
 
-    prefixes = ["van", "der"]
+    prefixes = [
+        "af",
+        "aan",
+        "bij"
+        "de", "den", "der", "d'",
+        "het", "'t",
+        "in",
+        "onder",
+        "op",
+        "over",
+        "'s",
+        "'t",
+        "te", "ten", "ter",
+        "tot"
+        "uit", "uijt"
+        "van", "vanden",
+        "ver",
+        "voor",
+        "a",
+        "al",
+        "am",
+        "auf",
+        "aus",
+        "ben", "bin",
+        "da",
+        "dal", "dalla", "della",
+        "das", "die", "den", "der", "des",
+        "deca",
+        "degli",
+        "dei",
+        "del",
+        "di",
+        "do",
+        "don",
+        "dos",
+        "du",
+        "el",
+        "i",
+        "im",
+        "L",
+        "la", "las",
+        "le", "les",
+        "lo", "los",
+        "o'",
+        "tho", "thoe", "thor", "to", "toe",
+        "unter",
+        "vom", "von",
+        "vor",
+        "zu", "zum", "zur"
+    ]
 
     def fill_full_name(self):
         if self.first_name and self.last_name and not self.full_name:
@@ -51,7 +100,6 @@ class PersonMixin(object):
         last_name = names.pop()
         first_names = []
         prefixes = []
-        print self.prefixes
         for name in names:
             if name in self.prefixes:
                 prefixes.append(name)
