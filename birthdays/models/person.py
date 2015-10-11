@@ -91,7 +91,7 @@ class PersonMixin(object):
             self.full_name = "{} {}".format(self.first_name, self.last_name)
 
     def split_full_name(self):
-        if not self.full_name:
+        if not self.full_name or (self.first_name and self.last_name):
             return
         names = self.full_name.lower().split(" ")
         if not len(names) > 1:
