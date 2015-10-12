@@ -72,7 +72,7 @@ class Command(BaseCommand):
         )
         for person_source in query_set:
             prefix_sample = person_source.prefix.split(" ")[0]
-            if prefix_sample not in person_source.full_name:
+            if prefix_sample not in person_source.last_name:
                 print("Fixing: ", person_source.last_name, " with prefix ", person_source.prefix, " -> ", person_source.id)
                 person_source.last_name = "{} {}".format(
                     person_source.prefix.strip(),
