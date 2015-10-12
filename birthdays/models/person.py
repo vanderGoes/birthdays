@@ -106,9 +106,9 @@ class PersonMixin(object):
             else:
                 first_names.append(name)
 
-        self.last_name = last_name.capitalize()
-        self.first_name = " ".join(map(string.capitalize, first_names))
         self.prefix = " ".join(prefixes) if prefixes else None
+        self.last_name = "{} {}".format(self.prefix, last_name.capitalize()) if self.prefix else last_name.capitalize()
+        self.first_name = " ".join(map(string.capitalize, first_names))
 
         pass  # depends heavily on the source
 

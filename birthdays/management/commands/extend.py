@@ -58,7 +58,7 @@ class Command(BaseCommand):
             person_source.save()
 
     @staticmethod
-    def correct_prefixes(source_model):
+    def correct_last_names(source_model):
         query_set = PersonSource.objects.filter(
             prefix__isnull=False,
             full_name__isnull=False,
@@ -73,13 +73,13 @@ class Command(BaseCommand):
         for person_source in query_set:
             prefix_sample = person_source.prefix.split(" ")[0]
             if prefix_sample not in person_source.full_name:
-                print("Fixing: ", person_source.full_name, " with prefix ", person_source.prefix, " -> ", person_source.id)
-                person_source.full_name = "{} {}".format(
+                print("Fixing: ", person_source.last_name, " with prefix ", person_source.prefix, " -> ", person_source.id)
+                person_source.last_name = "{} {}".format(
                     person_source.prefix.strip(),
-                    person_source.full_name.strip()
+                    person_source.last_name.strip()
                 )
                 person_source.save()
-                print("Fixed with: ", person_source.full_name)
+                print("Fixed with: ", person_source.last_name)
 
     def add_arguments(self, parser):
         parser.add_argument(
