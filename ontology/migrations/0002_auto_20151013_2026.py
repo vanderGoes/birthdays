@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='date',
             name='slug',
-            field=models.CharField(max_length=255, null=True),
+            field=models.CharField(max_length=255, null=True, db_index=True),
         ),
         migrations.AddField(
             model_name='firstname',
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='firstname',
             name='slug',
-            field=models.CharField(max_length=255, null=True),
+            field=models.CharField(max_length=255, null=True, db_index=True),
         ),
         migrations.AddField(
             model_name='lastname',
@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='lastname',
             name='slug',
-            field=models.CharField(max_length=255, null=True),
+            field=models.CharField(max_length=255, null=True, db_index=True),
         ),
         migrations.AddField(
             model_name='year',
@@ -49,6 +49,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='year',
             name='slug',
-            field=models.CharField(max_length=255, null=True),
+            field=models.CharField(max_length=255, null=True, db_index=True),
         ),
     ]

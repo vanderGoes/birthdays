@@ -14,7 +14,7 @@ class OntologyItem(models.Model):
         default=list
     )
     frequency = models.PositiveIntegerField(null=True)
-    slug = models.CharField(max_length=255, null=True)
+    slug = models.CharField(max_length=255, null=True, db_index=True)
 
     def add_source(self, model):
         model_name = model._meta.model_name
