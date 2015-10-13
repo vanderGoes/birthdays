@@ -59,15 +59,13 @@ class Command(BaseCommand):
 
     @staticmethod
     def correct_last_names(source_model):
-        query_set = PersonSource.objects.filter(
+        query_set = source_model.objects.filter(
             prefix__isnull=False,
             full_name__isnull=False,
-            first_name__isnull=False,
             last_name__isnull=False,
         ).exclude(
             prefix="",
             full_name="",
-            first_name="",
             last_name="",
         )
         for person_source in query_set:
