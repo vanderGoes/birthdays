@@ -1,25 +1,15 @@
-"""birthdays URL Configuration
+from __future__ import unicode_literals
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.8/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
-Including another URLconf
-    1. Add an import:  from blog import urls as blog_urls
-    2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
-"""
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from . import views
+from birthdays import views as birthdays_views
+from ontology import views as ontology_views
 
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^stats/?$', views.stats, name="stats")
+    url(r'^stats/?$', birthdays_views.stats, name="stats"),
+    url(r'^first-names/(?P<slug>[a-z\-]+)/?', ontology_views.first_names, name="first_names"),
+    url(r'^last-names/(?P<slug>[a-z\-]+)/?', ontology_views.last_names, name="last_names"),
 ]

@@ -13,7 +13,7 @@ class Command(BaseCommand):
     """
 
     @staticmethod
-    def add_to_ontology(source_model):
+    def last_names(source_model):
         for last_name in source_model.objects.values_list("last_name", flat=True).distinct():
             if not last_name:
                 continue
@@ -21,7 +21,11 @@ class Command(BaseCommand):
                 name=last_name
             )
             last_name_record.add_source(source_model)
+            last_name_record.clean()
             last_name_record.save()
+
+    @staticmethod
+    def first_names(source_model):
         for first_name in source_model.objects.values_list("first_name", flat=True).distinct():
             if not first_name:
                 continue
@@ -29,7 +33,11 @@ class Command(BaseCommand):
                 name=first_name
             )
             first_name_record.add_source(source_model)
+            first_name_record.clean()
             first_name_record.save()
+
+    @staticmethod
+    def birth_dates(source_model):
         for birth_date in source_model.objects.values_list("birth_date", flat=True).distinct():
             if not birth_date:
                 continue
@@ -37,12 +45,20 @@ class Command(BaseCommand):
                 date=birth_date
             )
             date_record.add_source(source_model)
+            date_record.clean()
             date_record.save()
             year_record, created = Year.objects.get_or_create(
                 year=birth_date.year
             )
             year_record.add_source(source_model)
+            year_record.clean()
             year_record.save()
+
+    @staticmethod
+    def all(source_model):
+        Command.last_names(source_model)
+        Command.first_names(source_model)
+        Command.birth_dates(source_model)
 
     def add_arguments(self, parser):
         parser.add_argument(
