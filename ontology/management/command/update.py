@@ -13,7 +13,9 @@ class Command(BaseCommand):
 
     @staticmethod
     def slugs(ontology_type):
-        print(ontology_type)
+        for item in ontology_type.objects.all():
+            item.clean()
+            item.save()
 
     def add_arguments(self, parser):
         parser.add_argument(
