@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.utils.text import slugify
+from django.core.urlresolvers import reverse
+from django.conf import settings
 
 
 class OntologyItem(models.Model):
@@ -19,11 +21,18 @@ class OntologyItem(models.Model):
         if model_name not in self.sources:
             self.sources.append(model_name)
 
-    def create_slug(self):
+    @staticmethod
+    def create_slug(name):
         raise NotImplementedError("Base class for ontology item can't create slugs")
 
+    @classmethod
+    def create_uri(cls, value):
+        view_name = "{}_view".format(cls._meta.model_name)
+        view_url = reverse(view_name, {"slug": cls.create_slug(value)})
+        return "{}{}".format(settings.BIRTHDAYS_DOMAIN, view_url)
+
     def clean(self):
-        self.slug = self.create_slug()
+        self.slug = self.create_slug(self.name)
 
     class Meta:
         abstract = True
@@ -32,26 +41,30 @@ class OntologyItem(models.Model):
 class LastName(OntologyItem):
     name = models.CharField(max_length=255)
 
-    def create_slug(self):
-        return slugify(self.name)
+    @staticmethod
+    def create_slug(name):
+        return slugify(name)
 
 
 class FirstName(OntologyItem):
     name = models.CharField(max_length=255)
 
-    def create_slug(self):
-        return slugify(self.name)
+    @staticmethod
+    def create_slug(name):
+        return slugify(name)
 
 
 class Date(OntologyItem):
     date = models.DateField()
 
-    def create_slug(self):
-        return self.date.strftime("%m-%d-%Y")
+    @staticmethod
+    def create_slug(date):
+        return date.strftime("%m-%d-%Y")
 
 
 class Year(OntologyItem):
     year = models.IntegerField()
 
-    def create_slug(self):
-        return str(self.year)
+    @staticmethod
+    def create_slug(year):
+        return str(year)

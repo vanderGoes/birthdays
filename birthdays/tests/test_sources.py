@@ -1,11 +1,12 @@
 from __future__ import unicode_literals, absolute_import, print_function, division
 
 from django.test import TestCase
+from django.conf import settings
 
 from birthdays.models import NBASource, Person, SoccerSource
 
 
-class TestCombineCommand(TestCase):
+class TestSources(TestCase):
 
     def test_nba_split_name(self):
         instance = NBASource()
@@ -13,7 +14,7 @@ class TestCombineCommand(TestCase):
         instance.split_full_name()
         self.assertEqual(instance.initials, "H.")
         self.assertEqual(instance.prefix, "van der")
-        self.assertEqual(instance.last_name, "Spek")
+        self.assertEqual(instance.last_name, "van der Spek")
         instance = NBASource()
         instance.full_name = "Berkers, F.C."
         instance.split_full_name()
@@ -33,7 +34,7 @@ class TestCombineCommand(TestCase):
         instance.split_full_name()
         self.assertEqual(instance.first_name, "Henk")
         self.assertEqual(instance.prefix, "van der")
-        self.assertEqual(instance.last_name, "Spek")
+        self.assertEqual(instance.last_name, "van der Spek")
         instance = Person()
         instance.full_name = "Fako Casper Berkers"
         instance.split_full_name()
@@ -54,4 +55,12 @@ class TestCombineCommand(TestCase):
         self.assertEqual(instance.first_name, None)
         self.assertEqual(instance.initials, "H.")
         self.assertEqual(instance.prefix, "van der")
-        self.assertEqual(instance.last_name, "Spek")
+        self.assertEqual(instance.last_name, "van der Spek")
+
+    def test_get_uri(self):
+        instance = NBASource()
+        instance.full_name = "Henk van der Spek"
+        instance.props = {}
+        instance.save()
+        uri = instance.get_uri()
+        self.assertEqual(uri, "{}/admin/birthdays/nbasource/16/".format(settings.BIRTHDAYS_DOMAIN))

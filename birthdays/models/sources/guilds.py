@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import re
 
 from ..person import PersonSource
@@ -13,6 +15,8 @@ class NBASource(PersonSource):
             self.last_name = match.group("last_name")
             self.initials = match.group("initials")
             self.prefix = match.group("prefix")
+        if self.prefix and self.last_name:
+            self.last_name = "{} {}".format(self.prefix, self.last_name)
 
 
 class BIGSource(PersonSource):

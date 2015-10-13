@@ -3,10 +3,10 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 from django.test import TestCase
 
 from birthdays.management.commands.input import Command as InputCommand
-from birthdays.models import Person, PersonSourceMockOne, PersonSource
+from birthdays.models import PersonSourceMockOne
 
 
-class TestCombineCommand(TestCase):
+class TestInputCommand(TestCase):
 
     fixtures = ["test.json"]
 

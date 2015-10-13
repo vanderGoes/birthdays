@@ -6,6 +6,8 @@ from pandas import DataFrame
 
 from django.db import models
 from django.contrib.postgres.fields import HStoreField
+from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from polymorphic import PolymorphicModel, PolymorphicManager
 
@@ -110,8 +112,6 @@ class PersonMixin(object):
         self.last_name = "{} {}".format(self.prefix, last_name.capitalize()) if self.prefix else last_name.capitalize()
         self.first_name = " ".join(map(string.capitalize, first_names))
 
-        pass  # depends heavily on the source
-
     def __unicode__(self):
         return "{} {}".format(self.__class__.__name__, self.id)
 
@@ -154,3 +154,7 @@ class PersonSource(PersonMixin, PolymorphicModel):
         self.split_full_name()
         super(PersonSource, self).save(*args, **kwargs)
 
+    def get_uri(self):
+        admin_view_name = "admin:birthdays_{}_change".format(self._meta.model_name)
+        admin_url = reverse(admin_view_name, args=(self.id,))
+        return "{}{}".format(settings.BIRTHDAYS_DOMAIN, admin_url)
