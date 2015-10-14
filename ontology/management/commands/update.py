@@ -19,13 +19,17 @@ class Command(BaseCommand):
 
     @staticmethod
     def split_name(ontology_type):
+        deletes = []
         for item in ontology_type.objects.filter(name__contains=" "):
             for name in item.name.split(" "):
                 obj, created = ontology_type.objects.get_or_create(name=name)
                 for source in item.sources:
-                    obj.add_source(source)
+                    if source not in obj.sources:
+                        obj.sources.append(source)
                 obj.clean()
                 obj.save()
+            deletes.append(item.id)
+        ontology_type.objects.filter(id__in=deletes).delete()
 
     def add_arguments(self, parser):
         parser.add_argument(
