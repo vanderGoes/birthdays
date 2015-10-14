@@ -17,6 +17,16 @@ class Command(BaseCommand):
             item.clean()
             item.save()
 
+    @staticmethod
+    def split_name(ontology_type):
+        for item in ontology_type.objects.filter(name__contains=" "):
+            for name in item.name.split(" "):
+                obj, created = ontology_type.objects.get_or_create(name=name)
+                for source in obj.sources:
+                    obj.add_source(source)
+                obj.clean()
+                obj.save()
+
     def add_arguments(self, parser):
         parser.add_argument(
             'update_type',
