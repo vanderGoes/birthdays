@@ -28,7 +28,7 @@ class OntologyItem(models.Model):
     @classmethod
     def create_uri(cls, value):
         view_name = "{}_view".format(cls._meta.model_name)
-        view_url = reverse(view_name, {"slug": cls.create_slug(value)})
+        view_url = reverse(view_name, kwargs={"slug": cls.create_slug(value)})
         return "{}{}".format(settings.BIRTHDAYS_DOMAIN, view_url)
 
     def clean(self):
