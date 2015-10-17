@@ -7,8 +7,8 @@ from ..person import PersonSource
 
 class NBASource(PersonSource):
 
-    def split_full_name(self):
-        if not self.full_name or (self.first_name and self.last_name):
+    def split_full_name(self, force=False):
+        if (not self.full_name or (self.first_name and self.last_name)) or force:
             return
         match = re.match("(?P<last_name>\w+), (?P<initials>[A-Z.]+) ?(?P<prefix>[\w\s]+)?", self.full_name)
         if match is not None:

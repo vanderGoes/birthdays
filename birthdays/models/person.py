@@ -88,12 +88,12 @@ class PersonMixin(object):
         "zu", "zum", "zur",
     ]
 
-    def fill_full_name(self):
-        if self.first_name and self.last_name and not self.full_name:
+    def fill_full_name(self, force=False):
+        if (self.first_name and self.last_name and not self.full_name) or force:
             self.full_name = "{} {}".format(self.first_name, self.last_name)
 
-    def split_full_name(self):
-        if not self.full_name or (self.first_name and self.last_name):
+    def split_full_name(self, force=False):
+        if (not self.full_name or (self.first_name and self.last_name)) or force:
             return
         names = self.full_name.lower().split(" ")
         if not len(names) > 1:
