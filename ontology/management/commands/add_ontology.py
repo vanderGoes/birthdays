@@ -16,6 +16,8 @@ class Command(BaseCommand):
     def last_names(source_model):
         person_set = source_model.objects.exclude(last_name="", last_name__isnull=True)
         for last_name in person_set.values_list("last_name", flat=True).distinct():
+            if last_name is None:
+                continue
             last_name_record, created = LastName.objects.get_or_create(
                 name=last_name
             )
@@ -41,6 +43,8 @@ class Command(BaseCommand):
     def birth_dates(source_model):
         person_set = source_model.objects.exclude(birth_date__isnull=True)
         for birth_date in person_set.values_list("birth_date", flat=True).distinct():
+            if birth_date is None:
+                continue
             date_record, created = Date.objects.get_or_create(
                 date=birth_date
             )
