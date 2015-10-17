@@ -6,6 +6,7 @@ from rdflib.namespace import FOAF, RDF
 
 from django.apps import apps as django_apps
 from django.core.management.base import BaseCommand
+from django.core.paginator import Paginator
 
 from birthdays.models import PersonSource
 from ontology.models import LastName, FirstName, Date, Year
@@ -16,10 +17,12 @@ class Command(BaseCommand):
     Command output sources to different formats
     """
 
+    page_size = 100000
+
     @staticmethod
-    def graph_from_source(source_model):
+    def graph_from_page(page):
         graph = Graph()
-        for person in source_model.objects.all()[:3]:
+        for person in page.object_list:
             person_uri = URIRef(person.get_uri())
             graph.add((person_uri, RDF.type, FOAF.Person))
             if person.last_name:
@@ -38,10 +41,17 @@ class Command(BaseCommand):
 
     @staticmethod
     def output_to_turtle(source_model):
-        graph = Command.graph_from_source(source_model)
-        serialized_graph = graph.serialize(format="turtle", encoding='utf8')
-        with open("graph.ttl", "w") as fp:
-            fp.write(serialized_graph)
+        pages = Paginator(source_model.objects.all(), Command.page_size)
+        for page_number in pages.page_range:
+            graph = Command.graph_from_page(
+                pages.page(page_number)
+            )
+            serialized_graph = graph.serialize(format="turtle", encoding='utf8')
+            file_name = "{}-obj-{}-{}.ttl".format(
+                source_model._meta.model_name,
+            )
+            with open(file_name, "w") as fp:
+                fp.write(serialized_graph)
 
     def add_arguments(self, parser):
         parser.add_argument(
