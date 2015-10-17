@@ -4,11 +4,15 @@ from birthdays.models import (Person, NBASource, BIGSource, PhoneBookSource, Wie
                               SchoolBankSource, ActeursSpotSource, BenfCastingSource)
 
 
-class PersonSourceAdmin(admin.ModelAdmin):
+class PersonAdmin(admin.ModelAdmin):
     list_display = ["full_name", "birth_date", "props"]
 
 
-admin.site.register(Person, PersonSourceAdmin)
+class PersonSourceAdmin(PersonAdmin):
+    raw_id_fields = ["master"]
+
+
+admin.site.register(Person, PersonAdmin)
 admin.site.register(NBASource, PersonSourceAdmin)
 admin.site.register(BIGSource, PersonSourceAdmin)
 admin.site.register(PhoneBookSource, PersonSourceAdmin)
