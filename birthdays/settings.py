@@ -26,6 +26,9 @@ SECRET_KEY = 'yhqq5k16b9*8a0pfo8778y07se8j@5h%^f@zbtbtx2q0+pq+y*'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+INTERNAL_IPS = [
+    "192.168.1.3"
+]
 
 
 # Application definition
@@ -40,7 +43,8 @@ INSTALLED_APPS = (
     'django.contrib.postgres',
     'polymorphic',
     'birthdays',
-    'ontology'
+    'ontology',
+    'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -52,6 +56,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'birthdays.urls'
