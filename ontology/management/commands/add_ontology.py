@@ -27,12 +27,13 @@ class Command(BaseCommand):
     def first_names(source_model):
         person_set = source_model.objects.exclude(first_name="", first_name__isnull=True)
         for first_name in person_set.values_list("first_name", flat=True).distinct():
-            first_name_record, created = FirstName.objects.get_or_create(
-                name=first_name
-            )
-            first_name_record.add_source(source_model)
-            first_name_record.clean()
-            first_name_record.save()
+            for name in first_name.split(" "):
+                first_name_record, created = FirstName.objects.get_or_create(
+                    name=name
+                )
+                first_name_record.add_source(source_model)
+                first_name_record.clean()
+                first_name_record.save()
 
     @staticmethod
     def birth_dates(source_model):
