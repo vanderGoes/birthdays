@@ -39,7 +39,7 @@ class OntologyItem(models.Model):
 
 
 class LastName(OntologyItem):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, db_index=True)
 
     @staticmethod
     def create_slug(name):
@@ -47,7 +47,7 @@ class LastName(OntologyItem):
 
 
 class FirstName(OntologyItem):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, db_index=True)
 
     @staticmethod
     def create_slug(name):
@@ -55,7 +55,7 @@ class FirstName(OntologyItem):
 
 
 class Date(OntologyItem):
-    date = models.DateField()
+    date = models.DateField(db_index=True)
 
     @staticmethod
     def create_slug(date):
@@ -63,7 +63,7 @@ class Date(OntologyItem):
 
 
 class Year(OntologyItem):
-    year = models.IntegerField()
+    year = models.IntegerField(db_index=True)
 
     @staticmethod
     def create_slug(year):
