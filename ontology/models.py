@@ -16,6 +16,8 @@ class OntologyItem(models.Model):
     frequency = models.PositiveIntegerField(null=True)
     slug = models.CharField(max_length=255, null=True, db_index=True)
 
+    slug_attr = "name"
+
     def add_source(self, model):
         model_name = model._meta.model_name
         if model_name not in self.sources:
@@ -32,7 +34,9 @@ class OntologyItem(models.Model):
         return "{}{}".format(settings.BIRTHDAYS_DOMAIN, view_url)
 
     def clean(self):
-        self.slug = self.create_slug(self.name)
+        self.slug = self.create_slug(
+            getattr(self, self.slug_attr)
+        )
 
     class Meta:
         abstract = True
@@ -57,6 +61,8 @@ class FirstName(OntologyItem):
 class Date(OntologyItem):
     date = models.DateField(db_index=True)
 
+    slug_attr = "date"
+
     @staticmethod
     def create_slug(date):
         return date.strftime("%m-%d-%Y")
@@ -64,6 +70,8 @@ class Date(OntologyItem):
 
 class Year(OntologyItem):
     year = models.IntegerField(db_index=True)
+
+    slug_attr = "year"
 
     @staticmethod
     def create_slug(year):
