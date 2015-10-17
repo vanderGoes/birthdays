@@ -27,6 +27,8 @@ class Command(BaseCommand):
     def first_names(source_model):
         person_set = source_model.objects.exclude(first_name="", first_name__isnull=True)
         for first_name in person_set.values_list("first_name", flat=True).distinct():
+            if first_name is None:
+                continue
             for name in first_name.split(" "):
                 first_name_record, created = FirstName.objects.get_or_create(
                     name=name
