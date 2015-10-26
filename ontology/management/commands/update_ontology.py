@@ -47,10 +47,10 @@ class Command(BaseCommand):
             PREFIX y: <http://nvk.nl/years/>
         """
         sparql_template = prefixes + """
-            SELECT COUNT(*) WHERE {
+            SELECT COUNT(*) WHERE {{
                 ?person rdf:type foaf:Person .
                 ?person foaf:lastName ln:{}  .
-            }
+            }}
         """
         url_template = "http://192.168.1.20:8890/sparql/"
         url_parameters = {
@@ -67,8 +67,10 @@ class Command(BaseCommand):
             response = requests.get(url_template, params=url_parameters)
             try:
                 frequency = response.json()["results"]["bindings"][0]["callret-0"]["value"]
+                item.frequency = frequency
             except KeyError:
                 print("Could not work with: " + response.json())
+
             item.save()
 
     def add_arguments(self, parser):
