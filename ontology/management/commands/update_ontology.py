@@ -1,9 +1,14 @@
 from __future__ import unicode_literals, absolute_import, print_function, division
 
+import requests
+
 from django.apps import apps as django_apps
 from django.core.management.base import BaseCommand
 
 from ontology.models import OntologyItem
+
+
+
 
 
 class Command(BaseCommand):
@@ -30,6 +35,41 @@ class Command(BaseCommand):
                 obj.save()
             deletes.append(item.id)
         ontology_type.objects.filter(id__in=deletes).delete()
+
+    @staticmethod
+    def set_stats(ontology_type):
+        from ontology.models import LastName
+        prefixes = """
+            PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+            PREFIX fn: <http://nvk.nl/first-names/>
+            PREFIX ln: <http://nvk.nl/last-names/>
+            PREFIX bd: <http://nvk.nl/birth-dates/>
+            PREFIX y: <http://nvk.nl/years/>
+        """
+        sparql_template = prefixes + """
+            SELECT COUNT(*) WHERE {
+                ?person rdf:type foaf:Person .
+                ?person foaf:lastName ln:{}  .
+            }
+        """
+        url_template = "http://192.168.1.20:8890/sparql/"
+        url_parameters = {
+            "default-graph-uri": "",
+            "format": "application/sparql-results+json",
+            "timeout": 0,
+            "debug": "on"
+        }
+        for item in LastName.objects.all():
+            item.clean()  # fills slug
+            url_parameters["query"] = sparql_template.format(
+                item.slug
+            )
+            response = requests.get(url_template, params=url_parameters)
+            try:
+                frequency = response.json()["results"]["bindings"][0]["callret-0"]["value"]
+            except KeyError:
+                print("Could not work with: " + response.json())
+            item.save()
 
     def add_arguments(self, parser):
         parser.add_argument(
