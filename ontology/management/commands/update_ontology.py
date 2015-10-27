@@ -59,7 +59,7 @@ class Command(BaseCommand):
             "timeout": 0,
             "debug": "on"
         }
-        for item in LastName.objects.all():
+        for item in LastName.objects.filter(frequency__isnull=True):
             item.clean()  # fills slug
             url_parameters["query"] = sparql_template.format(
                 item.slug
@@ -70,6 +70,8 @@ class Command(BaseCommand):
                 item.frequency = frequency
             except KeyError:
                 print("Could not work with: " + response.json())
+            except ValueError:
+                print("Not json: " + response.content)
 
             item.save()
 
