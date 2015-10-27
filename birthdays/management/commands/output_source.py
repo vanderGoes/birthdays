@@ -47,8 +47,9 @@ class Command(BaseCommand):
                 pages.page(page_number)
             )
             serialized_graph = graph.serialize(format="turtle", encoding='utf8')
-            file_name = "{}-obj-{}-{}.ttl".format(
+            file_name = "{}-page-{}.ttl".format(
                 source_model._meta.model_name,
+                page_number
             )
             with open(file_name, "w") as fp:
                 fp.write(serialized_graph)
