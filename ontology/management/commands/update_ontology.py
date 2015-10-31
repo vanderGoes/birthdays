@@ -85,13 +85,11 @@ class Command(BaseCommand):
             if created:
                 stripped_item.frequency = item.frequency
             for source in item.sources:
-                stripped_item.add_source(source)
+                if source not in stripped_item.sources:
+                    stripped_item.sources.append(source)
             stripped_item.clean()
             stripped_item.save()
             ontology_type.objects.filter(id=item.id).delete()
-
-
-
 
     def add_arguments(self, parser):
         parser.add_argument(

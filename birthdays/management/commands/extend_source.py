@@ -7,6 +7,7 @@ from datetime import datetime
 from django.apps import apps as django_apps
 from django.core.management.base import BaseCommand
 from django.db import connections
+from django.db.models import Q
 
 from birthdays.models import Person, PersonSource
 from ._actions import DecodeMappingAction
@@ -78,6 +79,17 @@ class Command(BaseCommand):
                 )
                 person_source.save()
                 print("Fixed with: ", person_source.last_name)
+
+    def strip_name_whitespace(self):
+        name_attrs = ["first_name", "last_name", "full_name"]
+        for attr in name_attrs:
+            startswith_filter = "{}__startswith".format(attr)
+            endswith_filter = "{}__endswith".format(attr)
+            for person in PersonSource.objects.filter(
+                    Q(startswith_filter=" "), Q(endswith_filter=" ")):
+                value = getattr(person, attr)
+                setattr(person, attr, value.strip())
+                person.save()
 
     def add_arguments(self, parser):
         parser.add_argument(
