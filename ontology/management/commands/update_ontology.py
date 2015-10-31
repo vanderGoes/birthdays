@@ -75,6 +75,24 @@ class Command(BaseCommand):
 
             item.save()
 
+    def merge_names_on_whitespace(self, ontology_type):
+        for item in ontology_type.objects.all():
+            if not item.name.startswith(" ") and not item.name.endswith(" "):
+                continue
+            stripped_item, created = ontology_type.objects.get_or_create(
+                name=item.name.strip()
+            )
+            if created:
+                stripped_item.frequency = item.frequency
+            for source in item.sources:
+                stripped_item.add_source(source)
+            stripped_item.clean()
+            stripped_item.save()
+            ontology_type.objects.filter(id=item.id).delete()
+
+
+
+
     def add_arguments(self, parser):
         parser.add_argument(
             'update_type',
