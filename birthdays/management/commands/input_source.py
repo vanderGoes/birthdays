@@ -74,6 +74,8 @@ class Command(BaseCommand):
     def from_csv(file_name, source_name, mapping, date_format):
         source_model = django_apps.get_model(app_label="birthdays", model_name=source_name)
         data_frame = pandas.read_csv(file_name, sep=';')
+        columns = [c for c in data_frame.columns if 'Unnamed' not in c]
+        data_frame = data_frame[columns]
         for record in data_frame.to_dict(orient="records")[:10]:
             fields = Command.prep_dict_for_fields(record, mapping, date_format)
             print(record)
