@@ -3,6 +3,7 @@ import six
 
 import json
 from datetime import datetime
+import pandas
 
 from django.apps import apps as django_apps
 from django.core.management.base import BaseCommand
@@ -68,7 +69,10 @@ class Command(BaseCommand):
 
     @staticmethod
     def from_csv(file_name, source_name, mapping, date_format):
-        pass
+        source_model = django_apps.get_model(app_label="birthdays", model_name=source_name)
+        data_frame = pandas.read_csv(file_name)
+        for record in data_frame.to_records()[:10]:
+            print(record)
 
     @staticmethod
     def from_mysql_table(table_name, source_name, mapping, date_format):
