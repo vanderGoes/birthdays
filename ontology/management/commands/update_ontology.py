@@ -88,9 +88,6 @@ class Command(BaseCommand):
             stripped_item.save()
             ontology_type.objects.filter(id=item.id).delete()
 
-
-
-
     def add_arguments(self, parser):
         parser.add_argument(
             'update_type',
