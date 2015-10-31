@@ -71,7 +71,7 @@ class Command(BaseCommand):
     def from_csv(file_name, source_name, mapping, date_format):
         source_model = django_apps.get_model(app_label="birthdays", model_name=source_name)
         data_frame = pandas.read_csv(file_name)
-        for record in data_frame.to_dict(records=True)[:10]:
+        for record in data_frame.to_dict(orient="records")[:10]:
             print(record)
 
     @staticmethod
