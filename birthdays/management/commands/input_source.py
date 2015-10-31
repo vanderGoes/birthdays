@@ -26,7 +26,10 @@ class Command(BaseCommand):
                 key = mapping[key]
             if key == "birth_date" and value:
                 value = datetime.strptime(value, date_format).date()
-            fields[key] = unicode(value) if value else None
+            if isinstance(value, six.string_types):
+                fields[key] = unicode(value, errors="replace") if value else None
+            else:
+                fields[key] = value
         return fields
 
     @staticmethod
@@ -70,9 +73,20 @@ class Command(BaseCommand):
     @staticmethod
     def from_csv(file_name, source_name, mapping, date_format):
         source_model = django_apps.get_model(app_label="birthdays", model_name=source_name)
-        data_frame = pandas.read_csv(file_name)
+        data_frame = pandas.read_csv(file_name, sep=';')
         for record in data_frame.to_dict(orient="records")[:10]:
+            fields = Command.prep_dict_for_fields(record, mapping, date_format)
             print(record)
+            continue
+            source_model.objects.create(
+                first_name=fields.pop("first_name", None),
+                initials=fields.pop("initials", None),
+                prefix=fields.pop("prefix", None),
+                last_name=fields.pop("last_name", None),
+                full_name=fields.pop("full_name", None),
+                birth_date=fields.pop("birth_date", None),
+                props=fields
+            )
 
     @staticmethod
     def from_mysql_table(table_name, source_name, mapping, date_format):
