@@ -80,13 +80,14 @@ class Command(BaseCommand):
                 person_source.save()
                 print("Fixed with: ", person_source.last_name)
 
-    def strip_name_whitespace(self):
+    @staticmethod
+    def strip_name_whitespace(source_model):
         name_attrs = ["first_name", "last_name", "full_name"]
         for attr in name_attrs:
             startswith_filter = "{}__startswith".format(attr)
             endswith_filter = "{}__endswith".format(attr)
             for person in PersonSource.objects.filter(
-                    Q(startswith_filter=" "), Q(endswith_filter=" ")):
+                    Q(**{startswith_filter: " "}) | Q(**{endswith_filter: " "})):
                 value = getattr(person, attr)
                 setattr(person, attr, value.strip())
                 person.save()
