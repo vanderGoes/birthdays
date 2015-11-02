@@ -8,9 +8,6 @@ from django.core.management.base import BaseCommand
 from ontology.models import OntologyItem
 
 
-
-
-
 class Command(BaseCommand):
     """
     Command to created canonic entities

@@ -3,7 +3,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 from django.apps import apps as django_apps
 from django.core.management.base import BaseCommand
 
-from birthdays.models import PersonSource
 from ontology.models import LastName, FirstName, Date, Year
 
 
@@ -77,6 +76,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        from birthdays.models import PersonSource
         source_model = django_apps.get_model(app_label="birthdays", model_name=options["source"])
         assert issubclass(source_model, PersonSource), "Specified source {} is not a subclass of PersonSource".format(options["source"])
         handler = getattr(self, options["extend_type"])

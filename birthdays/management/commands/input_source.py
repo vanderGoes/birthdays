@@ -44,7 +44,7 @@ class Command(BaseCommand):
             assert isinstance(data[0]["fields"], dict), "Expected JSON Django serialized models as elements in " + file_name
             for instance in data:
                 fields = Command.prep_dict_for_fields(instance["fields"], mapping, date_format, exclude)
-                source_model.objects.create_from_fields(fields)
+                source_model.objects.register_from_fields(fields, source_model)
 
     @staticmethod
     def from_records(file_name, source_name, mapping, date_format, exclude):
@@ -55,7 +55,7 @@ class Command(BaseCommand):
             assert isinstance(data[0], dict), "Expected JSON dict as elements in " + file_name
             for instance in data:
                 fields = Command.prep_dict_for_fields(instance, mapping, date_format, exclude)
-                source_model.objects.create_from_fields(fields)
+                source_model.objects.register_from_fields(fields, source_model)
 
     @staticmethod
     def from_csv(file_name, source_name, mapping, date_format, exclude):
@@ -65,7 +65,7 @@ class Command(BaseCommand):
         data_frame = data_frame[columns]
         for record in data_frame.to_dict(orient="records"):
             fields = Command.prep_dict_for_fields(record, mapping, date_format, exclude)
-            source_model.objects.create_from_fields(fields)
+            source_model.objects.register_from_fields(fields, source_model)
 
     @staticmethod
     def from_mysql_table(table_name, source_name, mapping, date_format, exclude):
@@ -85,7 +85,7 @@ class Command(BaseCommand):
             ]
             for record in records:
                 fields = Command.prep_dict_for_fields(record, mapping, date_format, exclude)
-                source_model.objects.create_from_fields(fields)
+                source_model.objects.register_from_fields(fields, source_model)
 
     def add_arguments(self, parser):
         parser.add_argument(

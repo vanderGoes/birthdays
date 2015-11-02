@@ -12,6 +12,13 @@ from django.conf import settings
 
 from polymorphic import PolymorphicModel, PolymorphicManager
 
+from ontology.models import (
+    LastName,
+    FirstName,
+    Date,
+    Year
+)
+
 
 class PersonManager(PolymorphicManager):
 
@@ -36,7 +43,7 @@ class PersonManager(PolymorphicManager):
             return None
 
     @classmethod
-    def create_from_fields(cls, fields):
+    def register_from_fields(cls, fields, source_model):
         person_source = cls(
             first_name=fields.pop("first_name", None),
             initials=fields.pop("initials", None),
@@ -54,6 +61,32 @@ class PersonManager(PolymorphicManager):
 
         person_source.clean()
         person_source.save()
+
+        if person_source.last_name:
+            last_name, created = LastName.objects.get_or_create(name=person_source.last_name)
+            last_name.frequency = 1 if created else last_name.frequency + 1
+            last_name.add_source(source_model)
+            last_name.clean()
+            last_name.save()
+        if person_source.first_name:
+            first_name, created = FirstName.objects.get_or_create(name=person_source.first_name)
+            first_name.frequency = 1 if created else first_name.frequency + 1
+            first_name.add_source(source_model)
+            first_name.clean()
+            first_name.save()
+        if person_source.birth_date:
+            date, created = Date.objects.get_or_create(date=person_source.birth_date)
+            date.frequency = 1 if created else date.frequency + 1
+            date.add_source(source_model)
+            date.clean()
+            date.save()
+            year, created = Year.objects.get_or_create(year=person_source.birth_date.year)
+            year.frequency = 1 if created else year.frequency + 1
+            year.add_source(source_model)
+            year.clean()
+            year.save()
+
+        return person_source
 
 
 class PersonMixin(object):
