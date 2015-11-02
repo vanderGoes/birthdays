@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+import six
 
 import string
 
@@ -33,6 +34,26 @@ class PersonManager(PolymorphicManager):
             return DataFrame(data, columns=columns)
         else:
             return None
+
+    @classmethod
+    def create_from_fields(cls, fields):
+        person_source = cls(
+            first_name=fields.pop("first_name", None),
+            initials=fields.pop("initials", None),
+            prefix=fields.pop("prefix", None),
+            last_name=fields.pop("last_name", None),
+            full_name=fields.pop("full_name", None),
+            birth_date=fields.pop("birth_date", None),
+            props=fields
+        )
+
+        for attr in ["first_name", "initials", "prefix", "last_name", "full_name"]:
+            value = getattr(person_source, attr, None)
+            if value is not None and isinstance(value, six.string_types):
+                setattr(person_source, attr, value.strip())
+
+        person_source.clean()
+        person_source.save()
 
 
 class PersonMixin(object):
@@ -90,7 +111,10 @@ class PersonMixin(object):
 
     def fill_full_name(self, force=False):
         if (self.first_name and self.last_name and not self.full_name) or force:
-            self.full_name = "{} {}".format(self.first_name, self.last_name)
+            if not self.prefix:
+                self.full_name = "{} {}".format(self.first_name, self.last_name)
+            else:
+                self.full_name = "{} {} {}".format(self.first_name, self.prefix, self.last_name)
 
     def split_full_name(self, force=False):
         if (not self.full_name or (self.first_name and self.last_name)) or force:
@@ -127,13 +151,6 @@ class Person(PersonMixin, models.Model):
 
     props = HStoreField()
 
-    def save(self, *args, **kwargs):
-        if self.first_name and self.last_name and not self.full_name:
-            self.fill_full_name()
-        if self.full_name and (not self.first_name or not self.last_name):
-            self.split_full_name()
-        super(Person, self).save(*args, **kwargs)
-
 
 class PersonSource(PersonMixin, PolymorphicModel):
 
@@ -150,8 +167,10 @@ class PersonSource(PersonMixin, PolymorphicModel):
     master = models.ForeignKey(Person, null=True, blank=True, related_name="sources")
 
     def save(self, *args, **kwargs):
-        self.fill_full_name()
-        self.split_full_name()
+        if self.first_name and self.last_name and not self.full_name:
+            self.fill_full_name()
+        if self.full_name and (not self.first_name or not self.last_name):
+            self.split_full_name()
         super(PersonSource, self).save(*args, **kwargs)
 
     def get_uri(self):

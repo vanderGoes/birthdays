@@ -44,15 +44,7 @@ class Command(BaseCommand):
             assert isinstance(data[0]["fields"], dict), "Expected JSON Django serialized models as elements in " + file_name
             for instance in data:
                 fields = Command.prep_dict_for_fields(instance["fields"], mapping, date_format)
-                source_model.objects.create(
-                    first_name=fields.pop("first_name", None),
-                    initials=fields.pop("initials", None),
-                    prefix=fields.pop("prefix", None),
-                    last_name=fields.pop("last_name", None),
-                    full_name=fields.pop("full_name", None),
-                    birth_date=fields.pop("birth_date", None),
-                    props=fields
-                )
+                source_model.objects.create_from_fields(fields)
 
     @staticmethod
     def from_records(file_name, source_name, mapping, date_format):
@@ -63,15 +55,7 @@ class Command(BaseCommand):
             assert isinstance(data[0], dict), "Expected JSON dict as elements in " + file_name
             for instance in data:
                 fields = Command.prep_dict_for_fields(instance, mapping, date_format)
-                source_model.objects.create(
-                    first_name=fields.pop("first_name", None),
-                    initials=fields.pop("initials", None),
-                    prefix=fields.pop("prefix", None),
-                    last_name=fields.pop("last_name", None),
-                    full_name=fields.pop("full_name", None),
-                    birth_date=fields.pop("birth_date", None),
-                    props=fields
-                )
+                source_model.objects.create_from_fields(fields)
 
     @staticmethod
     def from_csv(file_name, source_name, mapping, date_format):
@@ -81,15 +65,7 @@ class Command(BaseCommand):
         data_frame = data_frame[columns]
         for record in data_frame.to_dict(orient="records"):
             fields = Command.prep_dict_for_fields(record, mapping, date_format)
-            source_model.objects.create(
-                first_name=fields.pop("first_name", None),
-                initials=fields.pop("initials", None),
-                prefix=fields.pop("prefix", None),
-                last_name=fields.pop("last_name", None),
-                full_name=fields.pop("full_name", None),
-                birth_date=fields.pop("birth_date", None),
-                props=fields
-            )
+            source_model.objects.create_from_fields(fields)
 
     @staticmethod
     def from_mysql_table(table_name, source_name, mapping, date_format):
@@ -109,13 +85,7 @@ class Command(BaseCommand):
             ]
             for record in records:
                 fields = Command.prep_dict_for_fields(record, mapping, date_format)
-                source_model.objects.create(
-                    first_name=fields.pop("first_name", None),
-                    last_name=fields.pop("last_name", None),
-                    full_name=fields.pop("full_name", None),
-                    birth_date=fields.pop("birth_date", None),
-                    props=fields
-                )
+                source_model.objects.create_from_fields(fields)
 
     def add_arguments(self, parser):
         parser.add_argument(
