@@ -9,25 +9,25 @@ from django.apps import apps as django_apps
 from django.core.management.base import BaseCommand
 from django.db import connections
 
-from birthdays.models import Person, PersonSource
 from ._actions import DecodeMappingAction
 
 
 class Command(BaseCommand):
     """
-    Command to merge sources into GeneratedPersons
+    Command to add new rows to person sources.
     """
 
     @staticmethod
-    def prep_dict_for_fields(dictionary, mapping, date_format):
+    def prep_dict_for_fields(dictionary, mapping, date_format, exclude):
         fields = {}
         for key, value in six.iteritems(dictionary):
+            if key in exclude:
+                continue
             if pandas.isnull(value):
                 value = None 
             if key in mapping:
                 key = mapping[key]
             if key == "birth_date" and value:
-                if not isinstance(value, six.string_types): print(value)
                 value = datetime.strptime(value, date_format).date()
             if isinstance(value, six.string_types):
                 fields[key] = unicode(value, errors="replace") if value else None
@@ -36,39 +36,39 @@ class Command(BaseCommand):
         return fields
 
     @staticmethod
-    def from_fixture(file_name, source_name, mapping, date_format):
+    def from_fixture(file_name, source_name, mapping, date_format, exclude):
         source_model = django_apps.get_model(app_label="birthdays", model_name=source_name)
         with open(file_name, "r") as fp:
             data = json.load(fp)
             assert isinstance(data, list), "Expected a list inside " + file_name
             assert isinstance(data[0]["fields"], dict), "Expected JSON Django serialized models as elements in " + file_name
             for instance in data:
-                fields = Command.prep_dict_for_fields(instance["fields"], mapping, date_format)
+                fields = Command.prep_dict_for_fields(instance["fields"], mapping, date_format, exclude)
                 source_model.objects.create_from_fields(fields)
 
     @staticmethod
-    def from_records(file_name, source_name, mapping, date_format):
+    def from_records(file_name, source_name, mapping, date_format, exclude):
         source_model = django_apps.get_model(app_label="birthdays", model_name=source_name)
         with open(file_name, "r") as fp:
             data = json.load(fp)
             assert isinstance(data, list), "Expected a list inside " + file_name
             assert isinstance(data[0], dict), "Expected JSON dict as elements in " + file_name
             for instance in data:
-                fields = Command.prep_dict_for_fields(instance, mapping, date_format)
+                fields = Command.prep_dict_for_fields(instance, mapping, date_format, exclude)
                 source_model.objects.create_from_fields(fields)
 
     @staticmethod
-    def from_csv(file_name, source_name, mapping, date_format):
+    def from_csv(file_name, source_name, mapping, date_format, exclude):
         source_model = django_apps.get_model(app_label="birthdays", model_name=source_name)
         data_frame = pandas.read_csv(file_name, sep=';')
         columns = [c for c in data_frame.columns if 'Unnamed' not in c]
         data_frame = data_frame[columns]
         for record in data_frame.to_dict(orient="records"):
-            fields = Command.prep_dict_for_fields(record, mapping, date_format)
+            fields = Command.prep_dict_for_fields(record, mapping, date_format, exclude)
             source_model.objects.create_from_fields(fields)
 
     @staticmethod
-    def from_mysql_table(table_name, source_name, mapping, date_format):
+    def from_mysql_table(table_name, source_name, mapping, date_format, exclude):
         source_model = django_apps.get_model(app_label="birthdays", model_name=source_name)
         cursor = connections["mysql"].cursor()
         cursor.execute("SELECT COUNT(*) FROM {}".format(table_name))
@@ -84,7 +84,7 @@ class Command(BaseCommand):
                 for row in cursor.fetchall()
             ]
             for record in records:
-                fields = Command.prep_dict_for_fields(record, mapping, date_format)
+                fields = Command.prep_dict_for_fields(record, mapping, date_format, exclude)
                 source_model.objects.create_from_fields(fields)
 
     def add_arguments(self, parser):
@@ -119,8 +119,14 @@ class Command(BaseCommand):
             default="%d-%m-%Y",
             help="The format of the input data that should be stored in the birth_date source field."
         )
+        parser.add_argument(
+            '-e', '--exclude',
+            type=lambda s: [item.strip() for item in s.split(',')],
+            nargs="?",
+            default=[],
+            help="A comma separated list of fields that should be ignored."
+        )
 
     def handle(self, *args, **options):
         handler = getattr(self, options["input_method"])
-        handler(options["file"], options["source"], options["mapping"], options["date_format"])
-
+        handler(options["file"], options["source"], options["mapping"], options["date_format"], options["exclude"])
