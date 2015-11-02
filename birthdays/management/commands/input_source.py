@@ -22,9 +22,12 @@ class Command(BaseCommand):
     def prep_dict_for_fields(dictionary, mapping, date_format):
         fields = {}
         for key, value in six.iteritems(dictionary):
+            if pandas.isnull(value):
+                value = None 
             if key in mapping:
                 key = mapping[key]
             if key == "birth_date" and value:
+                if not isinstance(value, six.string_types): print(value)
                 value = datetime.strptime(value, date_format).date()
             if isinstance(value, six.string_types):
                 fields[key] = unicode(value, errors="replace") if value else None
@@ -76,10 +79,8 @@ class Command(BaseCommand):
         data_frame = pandas.read_csv(file_name, sep=';')
         columns = [c for c in data_frame.columns if 'Unnamed' not in c]
         data_frame = data_frame[columns]
-        for record in data_frame.to_dict(orient="records")[:10]:
+        for record in data_frame.to_dict(orient="records"):
             fields = Command.prep_dict_for_fields(record, mapping, date_format)
-            print(record)
-            continue
             source_model.objects.create(
                 first_name=fields.pop("first_name", None),
                 initials=fields.pop("initials", None),
