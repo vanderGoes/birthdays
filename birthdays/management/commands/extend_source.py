@@ -56,7 +56,7 @@ class Command(BaseCommand):
         parser.add_argument(
             'extend_type',
             type=unicode,
-            help="The extend method. Either 'add_to_master', 'split_full_name' or 'extend_master'."
+            help="The extend method. Either 'add_to_master' or 'extend_master'."
         )
         parser.add_argument(
             '-s', '--source',
