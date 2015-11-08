@@ -11,3 +11,7 @@ class SoccerSource(PersonSource):
 
 class BilliardSource(PersonSource):
     pass
+
+
+class HockeySource(PersonSource):
+    pass
