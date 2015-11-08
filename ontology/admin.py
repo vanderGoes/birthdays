@@ -5,6 +5,7 @@ from ontology.models import LastName, FirstName, Date, Year
 
 class NameOntologyAdmin(admin.ModelAdmin):
     list_display = ["name", "sources"]
+    search_fields = ["name"]
 
 
 class DateOntologyAdmin(admin.ModelAdmin):
