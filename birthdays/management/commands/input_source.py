@@ -23,16 +23,16 @@ class Command(BaseCommand):
         for key, value in six.iteritems(dictionary):
             if key in exclude:
                 continue
-            if pandas.isnull(value):
-                value = None 
             if key in mapping:
                 key = mapping[key]
+            if pandas.isnull(value):
+                value = None
+            if isinstance(value, (six.integer_types, float)):
+                value = str(int(value))
             if key == "birth_date" and value:
                 value = datetime.strptime(value, date_format).date()
             if isinstance(value, six.string_types):
                 fields[key] = unicode(value, errors="replace") if value else None
-            elif isinstance(value, six.integer_types):
-                fields[key] = str(value)
             else:
                 fields[key] = value
         return fields
