@@ -31,6 +31,8 @@ class Command(BaseCommand):
                 value = datetime.strptime(value, date_format).date()
             if isinstance(value, six.string_types):
                 fields[key] = unicode(value, errors="replace") if value else None
+            elif isinstance(value, six.integer_types):
+                fields[key] = str(value)
             else:
                 fields[key] = value
         return fields
@@ -60,7 +62,7 @@ class Command(BaseCommand):
     @staticmethod
     def from_csv(file_name, source_name, mapping, date_format, exclude):
         source_model = django_apps.get_model(app_label="birthdays", model_name=source_name)
-        data_frame = pandas.read_csv(file_name, sep=';')
+        data_frame = pandas.read_csv(file_name, sep=',')
         columns = [c for c in data_frame.columns if 'Unnamed' not in c]
         data_frame = data_frame[columns]
         for record in data_frame.to_dict(orient="records"):
