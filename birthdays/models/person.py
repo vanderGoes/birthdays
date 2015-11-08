@@ -44,7 +44,7 @@ class PersonManager(PolymorphicManager):
 
     @classmethod
     def register_from_fields(cls, fields, source_model):
-        person_source = cls(
+        person_source = source_model(
             first_name=fields.pop("first_name", None),
             initials=fields.pop("initials", None),
             prefix=fields.pop("prefix", None),
