@@ -15,3 +15,7 @@ class BilliardSource(PersonSource):
 
 class HockeySource(PersonSource):
     pass
+
+
+class TriathlonSource(PersonSource):
+    pass
