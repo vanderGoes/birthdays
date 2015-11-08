@@ -54,6 +54,25 @@ class Command(BaseCommand):
             with open(file_name, "w") as fp:
                 fp.write(serialized_graph)
 
+    @staticmethod
+    def find_congress_participants(source_model):
+        import pandas
+        from birthdays.models import Person
+        df = pandas.read_csv("../data/congres-deelnemers.csv", encoding="UTF-8")
+        for row in df.to_dict(orient="records"):
+            first_name = row["Voornaam:"]
+            last_name = row["Achternaam:"]
+            if "," in last_name:
+                name, prefix = last_name.split(",")
+                last_name = "{} {}".format(prefix.strip(), name.strip())
+            full_name = "{} {}".format(first_name.strip(), last_name.strip())
+            for person in Person.objects.filter(full_name=full_name):
+                print(full_name)
+                print(person.birth_date.strftime("%d-%m-%Y"))
+                print(", ".join(set([source._meta.model_name for source in person.sources.all()])))
+                print(person.props)
+                print()
+
     def add_arguments(self, parser):
         parser.add_argument(
             'output_type',
