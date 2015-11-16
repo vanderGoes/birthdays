@@ -9,7 +9,7 @@ from django.apps import apps as django_apps
 from django.core.management.base import BaseCommand
 from django.db import connections
 
-from ._actions import DecodeMappingAction
+from ._actions import DecodeQueryAction
 
 
 class Command(BaseCommand):
@@ -108,7 +108,7 @@ class Command(BaseCommand):
         parser.add_argument(
             '-m', '--mapping',
             type=unicode,
-            action=DecodeMappingAction,
+            action=DecodeQueryAction,
             nargs="?",
             default={},
             help="A urlencoded string that specifies how to map the input data to the source data. "

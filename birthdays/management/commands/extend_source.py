@@ -10,7 +10,7 @@ from django.db import connections
 from django.db.models import Q
 
 from birthdays.models import Person, PersonSource
-from ._actions import DecodeMappingAction
+from ._actions import DecodeQueryAction
 
 
 class Command(BaseCommand):
