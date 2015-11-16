@@ -16,4 +16,5 @@ def output_person(person):
     ]
     print("Basic info:", ", ".join(basic_info))
     print("Extra info:", ", ".join(extra_info))
+    print("Source info:", ", ".join([source.__class__.__name__ for source in person.sources.all()]))
     print()

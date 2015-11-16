@@ -17,7 +17,7 @@ class Command(BaseCommand):
         query_set = Person.objects \
             .annotate(source_num=Count("sources")) \
             .all() \
-            .order_by("source_num")
+            .order_by("-source_num")
         for person in query_set[:10]:
             output_person(person)
 
