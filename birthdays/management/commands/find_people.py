@@ -2,7 +2,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 import six
 
 from django.core.management.base import BaseCommand
-from django.db.models import Count
+from django.core.paginator import Paginator
 
 from birthdays.models import PersonSource
 from birthdays.helpers import output_person
@@ -16,7 +16,8 @@ class Command(BaseCommand):
     """
 
     @staticmethod
-    def find(first_name=None, last_name=None, full_name=None, initials=None, prefix=None, birth_date=None, **kwargs):
+    def find(first_name=None, last_name=None, full_name=None, initials=None, prefix=None, birth_date=None,
+             batch_size=0, page_number=1, **kwargs):
         # Making the extra kwargs work with the HStore field
         filters = {"props__{}".format(key): value for key, value in six.iteritems(kwargs) if value is not None}
         # Keeping IDE auto complete for the method by writing out the definition.
@@ -30,9 +31,20 @@ class Command(BaseCommand):
             "birth_date": birth_date
         }
         filters.update({key: value for key, value in six.iteritems(fixed_arguments) if value is not None})
-        for person in PersonSource.objects.filter(**filters):
+        query_set = PersonSource.objects.filter(**filters)
+        if batch_size:
+            pages = Paginator(query_set, batch_size)
+            page = pages.page(page_number)
+            persons = page.object_list
+        else:
+            persons = query_set
+        for person in persons:
             output_person(person)
         print("Applied filters:", filters)
+        print("Total matches:", persons.count())
+        if batch_size:
+            print("Batch size:", batch_size)
+            print("Page:", page_number)
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -85,6 +97,20 @@ class Command(BaseCommand):
             default={},
             help="A urlencoded string that specifies extra search criteria. "
                  "Example: 'city=Utrecht&street_name=Oude Gracht'"
+        )
+        parser.add_argument(
+            '-B', '--batch',
+            type=int,
+            nargs="?",
+            default=0,
+            help=""
+        )
+        parser.add_argument(
+            '-P', '--page',
+            type=int,
+            nargs="?",
+            default=1,
+            help=""
         )
 
     def handle(self, no_color=False, traceback=False, verbosity=1, *args, **options):
