@@ -25,6 +25,7 @@ class Command(BaseCommand):
             print(10*"*" + " addresses " + 10*"*")
             for address in phonebook_set:
                 print(
+                    address.props["firstname"],
                     address.props["streetname"],
                     address.props["housenumber"],
                     address.props["postalcode"],
