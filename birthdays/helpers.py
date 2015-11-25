@@ -1,6 +1,8 @@
 from __future__ import unicode_literals, absolute_import, print_function, division
 import six
 
+from birthdays.models import Person
+
 
 def output_person(person):
     basic_info = [
@@ -16,5 +18,8 @@ def output_person(person):
     ]
     print("Basic info:", ", ".join(basic_info))
     print("Extra info:", ", ".join(extra_info))
-    print("Source info:", ", ".join([source.__class__.__name__ for source in person.sources.all()]))
+    if isinstance(person, Person):
+        print("Sources info:", ", ".join([source.__class__.__name__ for source in person.sources.all()]))
+    else:
+        print("Source info:", person._meta.model_name)
     print()
