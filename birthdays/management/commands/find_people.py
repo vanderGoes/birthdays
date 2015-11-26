@@ -41,7 +41,7 @@ class Command(BaseCommand):
         for person in persons:
             output_person(person)
         print("Applied filters:", filters)
-        print("Total matches:", persons.count())
+        print("Total matches:", query_set.count())
         if batch_size:
             print("Batch size:", batch_size)
             print("Page:", page_number)
@@ -103,14 +103,16 @@ class Command(BaseCommand):
             type=int,
             nargs="?",
             default=0,
-            help=""
+            help="",
+            dest="batch_size"
         )
         parser.add_argument(
             '-P', '--page',
             type=int,
             nargs="?",
             default=1,
-            help=""
+            help="",
+            dest="page_number"
         )
 
     def handle(self, no_color=False, traceback=False, verbosity=1, *args, **options):
