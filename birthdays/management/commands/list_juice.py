@@ -18,7 +18,7 @@ class Command(BaseCommand):
             .annotate(source_num=Count("sources")) \
             .all() \
             .order_by("-source_num")
-        for person in query_set[:10]:
+        for person in query_set[:100]:
             output_person(person)
 
     def handle(self, *args, **options):
