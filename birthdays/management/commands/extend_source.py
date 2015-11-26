@@ -54,9 +54,11 @@ class Command(BaseCommand):
 
     @staticmethod
     def lower_case_city(source_model):
-        for source in source_model.objects.filter(props__haskey="city"):
-            if source.props["city"].isupper():
+        for source in source_model.objects.filter(props__has_key="city"):
+            city = source.props["city"]
+            if city is not None and city.isupper():
                 source.props["city"] = source.props["city"].lower().capitalize()
+                source.save()
 
     @staticmethod
     def remove_immediate_duplicates(source_model):
@@ -68,6 +70,7 @@ class Command(BaseCommand):
             if person.full_name == previous.full_name and person.birth_date == previous.birth_date:
                 print("Deleting one:", person.full_name)
                 person.delete()
+            previous = person
 
     def add_arguments(self, parser):
         parser.add_argument(
