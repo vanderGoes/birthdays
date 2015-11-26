@@ -2,7 +2,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 
 from django.core.management.base import BaseCommand
 
-from birthdays.models import NBASource, PhoneBookSource, WieOWieSource
+from birthdays.models import PhoneBookSource, WieOWieSource, PersonSource
 
 
 class Command(BaseCommand):
@@ -12,11 +12,14 @@ class Command(BaseCommand):
 
     @staticmethod
     def list_phone_book():
-        for accountant in NBASource.objects.all()[:1000]:
-            full_name = accountant.full_name
-            birth_date = accountant.birth_date
-            last_name = accountant.last_name
-            city = accountant.props["city"]
+        query_set = PersonSource.objects \
+            .not_instance_of(PhoneBookSource, WieOWieSource) \
+            .filter(props__has_key="city")[:100]
+        for person in query_set:
+            full_name = person.full_name
+            birth_date = person.birth_date
+            last_name = person.last_name
+            city = person.props["city"]
             if not city:
                 continue
             city = city.lower().capitalize()
