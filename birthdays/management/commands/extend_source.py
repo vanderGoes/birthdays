@@ -72,6 +72,13 @@ class Command(BaseCommand):
                 person.delete()
             previous = person
 
+    @staticmethod
+    def remove_duplicates(source_model):
+        for person in source_model.objects.all():
+            if source_model.objects.filter(full_name=person.full_name, birth_date=person.birth_date).count() > 1:
+                print("Deleting one:", person.full_name)
+                person.delete()
+
     def add_arguments(self, parser):
         parser.add_argument(
             'extend_type',
