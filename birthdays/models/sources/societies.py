@@ -14,5 +14,5 @@ class KNACSource(PersonSource):
     pass
 
 
-class FiftyPlus(PersonSource):
+class FiftyPlusSource(PersonSource):
     pass
