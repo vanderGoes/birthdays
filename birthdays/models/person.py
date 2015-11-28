@@ -156,18 +156,59 @@ class PersonMixin(object):
         if not len(names) > 1:
             return
 
-        last_name = names.pop()
-        first_names = []
-        prefixes = []
-        for name in names:
-            if name in self.prefixes:
-                prefixes.append(name)
-            else:
-                first_names.append(name)
+        # last_name = names.pop()
+        # first_names = []
+        # prefixes = []
+        # for name in names:
+        #     if name in self.prefixes:
+        #         prefixes.append(name)
+        #     else:
+        #         first_names.append(name)
+
+		if len(names)==2:
+			first_name = names(0)
+			last_name = names(1)
+		else:
+			#prefix check
+			for name in names:
+				if name in self.prefixes:
+					pos_prefix = pos_prefix.append(names.index(name))
+			#split with prefix
+			if pos_prefix(0)!=null:
+				if pos_prefix(0)==1:
+					first_name = names[:1]
+					last_name = names[1:]
+				else:
+					for i in range(0,pos_prefix(0)-1):
+						first_name_temp = names[:pos_prefix(0)-i]
+						last_name_temp = names[pos_prefix(0)-i:]
+							if list_juice(last_name_temp)==true:
+								first_name=first_name_temp.capitalize()
+								last_name=last_name_temp.capitalize()
+			#split without prefix
+			else:
+				for i in range(1, len(names)):
+					first_name_temp = names[:len(names)-i]
+					last_name_temp = names[len(names)-i:]
+					if list_juice(last_name_temp)==true:
+						first_name=first_name_temp.capitalize()
+						last_name=last_name_temp.capitalize()
+		pos_prefix=[]
 
         self.prefix = " ".join(prefixes) if prefixes else None
         self.last_name = "{} {}".format(self.prefix, last_name.capitalize()) if self.prefix else last_name.capitalize()
         self.first_name = " ".join(map(string.capitalize, first_names))
+
+    @staticmethod
+    def list_juice(last_name_check):
+		query_set = Person.objects \
+		.filter(
+				first_name__isnull=False,
+				last_name__isnull=False,
+				last_name=last_name_check
+			) \
+			.exist()
+		return #boolean
 
     def __unicode__(self):
         return "{} {}".format(self.__class__.__name__, self.id)
