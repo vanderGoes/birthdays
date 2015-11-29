@@ -29,10 +29,16 @@ class Command(BaseCommand):
                 value = None
             if isinstance(value, (six.integer_types, float)):
                 value = str(int(value))
-            if key == "birth_date" and value:
-                value = datetime.strptime(value, date_format).date()
+            if key == "birth_date":
+                if value:
+                    value = datetime.strptime(value, date_format).date()
+                else:
+                    value = None
             if isinstance(value, six.string_types):
-                fields[key] = unicode(value, errors="replace") if value else None
+                if not isinstance(value, unicode):
+                    fields[key] = unicode(value, errors="replace") if value else None
+                else:
+                    fields[key] = value if value else None
             else:
                 fields[key] = value
         return fields

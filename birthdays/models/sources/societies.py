@@ -12,3 +12,7 @@ class KNACSource(PersonSource):
     An automobile club
     """
     pass
+
+
+class FiftyPlusSource(PersonSource):
+    pass
